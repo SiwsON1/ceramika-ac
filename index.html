@@ -1696,6 +1696,156 @@
     }
     .prod-page__cat-bar a:hover { color: var(--terracotta); }
     .prod-page__cat-bar a svg { width: 14px; height: 14px; }
+
+    /* ============================================
+       FAQ ACCORDION
+       ============================================ */
+    .faq-section {
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .faq-section__title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 500;
+      color: var(--cobalt);
+      margin-bottom: 24px;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cobalt);
+      list-style: none;
+      transition: color 0.2s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--terracotta);
+      transition: transform 0.3s var(--ease-out);
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    .faq-item[open] summary::after {
+      content: '-';
+    }
+    .faq-item summary:hover { color: var(--terracotta); }
+    .faq-item__answer {
+      padding: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    /* ============================================
+       RELATED CATEGORIES
+       ============================================ */
+    .related-cats {
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .related-cats__title {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.5vw, 28px);
+      font-weight: 500;
+      color: var(--cobalt);
+      margin-bottom: 20px;
+    }
+    .related-cats__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 576px) { .related-cats__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .related-cats__grid { grid-template-columns: repeat(6, 1fr); } }
+    .related-cats__link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cobalt);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .related-cats__link:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+      transform: translateY(-2px);
+    }
+    .related-cats__link svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.5; }
+
+    /* ============================================
+       CROSS-SELL (product page)
+       ============================================ */
+    .cross-sell {
+      padding: 48px 0;
+      background: var(--cream-dark);
+    }
+    .cross-sell__header {
+      margin-bottom: 24px;
+    }
+    .cross-sell__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (min-width: 576px) { .cross-sell__grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .cross-sell__grid { grid-template-columns: repeat(4, 1fr); } }
+    .cross-sell__cta {
+      margin-top: 24px;
+      text-align: center;
+    }
+    .cross-sell__cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--cobalt-medium);
+      transition: color 0.2s;
+    }
+    .cross-sell__cta a:hover { color: var(--terracotta); }
+    .cross-sell__cta a svg { width: 14px; height: 14px; }
+
+    /* ============================================
+       PRODUCT META LINKS
+       ============================================ */
+    .prod-info__meta a {
+      color: var(--cobalt-medium);
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .prod-info__meta a:hover {
+      color: var(--terracotta);
+      text-decoration-color: var(--terracotta);
+    }
+
+    /* ============================================
+       FOOTER 5-COL
+       ============================================ */
+    @media (min-width: 768px) {
+      .footer__top--5col { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -2116,56 +2266,7 @@
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
     <div class="container">
-      <div class="footer__top">
-        <div class="footer__brand">
-          <img src="wp-content/uploads/2025/01/logo-ac-napis-kob-duze-01-e1741865753124-1024x208.png"
-               alt="Ceramika AC"
-               class="footer__brand-logo">
-          <p>Producent ceramiki bolesławieckiej. Ręcznie malowana ceramika prosto z Bolesławca.</p>
-          <div class="footer__social">
-            <a href="https://www.facebook.com/ceramikaAC" aria-label="Facebook" rel="nofollow noopener" target="_blank">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="https://www.tiktok.com/@ceramikaac" aria-label="TikTok" rel="nofollow noopener" target="_blank">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.17V11.7a4.83 4.83 0 01-3.44-1.57V6.69h3.44z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/ceramikaac/" aria-label="Instagram" rel="nofollow noopener" target="_blank">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-          </div>
-        </div>
-        <div class="footer__col">
-          <h4>Kategorie</h4>
-          <ul>
-            <li><a href="#/kategoria/kubki">Kubki</a></li>
-            <li><a href="#/kategoria/filizanki">Filiżanki</a></li>
-            <li><a href="#/kategoria/czajniki-dzbanki">Czajniki</a></li>
-            <li><a href="#/kategoria/talerze">Talerze</a></li>
-            <li><a href="#/kategoria/miski-salaterki">Miski</a></li>
-            <li><a href="#/sklep">Wszystkie</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Informacje</h4>
-          <ul>
-            <li><a href="https://ceramikaac.com/o-nas/">O nas</a></li>
-            <li><a href="https://ceramikaac.com/kontakt/">Kontakt</a></li>
-            <li><a href="https://ceramikaac.com/regulamin/">Regulamin</a></li>
-            <li><a href="https://ceramikaac.com/polityka-prywatnosci/">Polityka prywatności</a></li>
-          </ul>
-        </div>
-        <div class="footer__col">
-          <h4>Kontakt</h4>
-          <ul>
-            <li>Bolesławiec, Polska</li>
-            <li><a href="mailto:kontakt@ceramikaac.com">kontakt@ceramikaac.com</a></li>
-            <li style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.5);">
-              Live: pt / nd / sr - 19:00<br>
-              Facebook + TikTok
-            </li>
-          </ul>
-        </div>
-      </div>
+      <div class="footer__top footer__top--5col" id="footerTop"></div>
       <div class="footer__bottom">
         <span>&copy; 2025 Ceramika AC. Wszystkie prawa zastrzeżone.</span>
         <span>Ceramika bolesławiecka - ręcznie tworzona z pasją</span>
@@ -2223,6 +2324,81 @@
       const tmp = document.createElement('div');
       tmp.innerHTML = html;
       return tmp.textContent || '';
+    }
+
+    // ========== INTERNAL LINKING HELPERS ==========
+    function getDecoCat(product) {
+      return product.cats.find(c => decoCats.some(dc => dc.id === c.id));
+    }
+
+    function getCrossSellByDeco(product, limit = 4) {
+      const deco = getDecoCat(product);
+      if (!deco) return [];
+      const shapeCat = getShapeCat(product);
+      return D.products.filter(p =>
+        p.id !== product.id &&
+        p.cats.some(c => c.id === deco.id) &&
+        (!shapeCat || !p.cats.some(c => c.id === shapeCat.id))
+      ).slice(0, limit);
+    }
+
+    function getRelatedCategories(cat, limit = 6) {
+      const siblings = D.categories.filter(c => c.parent === cat.parent && c.id !== cat.id && c.count > 0);
+      return siblings.sort((a, b) => b.count - a.count).slice(0, limit);
+    }
+
+    function generateFAQ(cat) {
+      const isShape = cat.parent === 43;
+      const friendly = D.decoNames[cat.slug] || '';
+      const title = friendly ? `${cat.name} ${friendly}` : cat.name;
+
+      if (isShape) {
+        return [
+          { q: `Czy ${title.toLowerCase()} z ceramiki bolesławieckiej nadają się do zmywarki?`, a: `Tak. Wszystkie nasze ${title.toLowerCase()} są wypalane w temperaturze ok. 1226°C, co sprawia że są odporne na zmywarkę, mikrofalówkę, piekarnik i zamrażarkę.` },
+          { q: `Jak powstają ${title.toLowerCase()} z Bolesławca?`, a: `Każdy egzemplarz jest ręcznie malowany za pomocą stempli i pędzli w naszej pracowni w Bolesławcu. Każde naczynie posiada stempel fabryki i podpis zdobiarza.` },
+          { q: `Czy ceramika bolesławiecka ${title.toLowerCase()} to oryginał?`, a: `Tak. Jesteśmy producentem z Bolesławca. Każdy produkt posiada stempel fabryczny i indywidualny podpis zdobiarza potwierdzający autentyczność.` },
+          { q: `Jak zamówić ${title.toLowerCase()} ceramiki bolesławieckiej?`, a: `Możesz zamówić przez nasz sklep online lub podczas transmisji live na Facebooku i TikToku (pt / nd / sr o 19:00).` }
+        ];
+      } else {
+        return [
+          { q: `Czym wyróżnia się wzór ${title}?`, a: `Wzór ${title} to jedna z naszych autorskich dekoracji - ręcznie malowana stemplami i pędzlami. Każdy egzemplarz jest unikalny dzięki ręcznej pracy zdobiarza.` },
+          { q: `W jakich kształtach dostępny jest wzór ${title}?`, a: `Wzór ${title} malujemy na różnych formach - kubkach, filiżankach, talerzach, czajnikach i innych naczyniach. Sprawdź produkty powyżej.` },
+          { q: `Czy wzór ${title} jest trwały?`, a: `Tak. Dekoracja jest wypalana w temperaturze ok. 1226°C pod glazurą, dzięki czemu jest trwała i odporna na zmywarkę, mikrofalówkę i piekarnik.` }
+        ];
+      }
+    }
+
+    function faqSectionHTML(faqs, cat) {
+      const friendly = D.decoNames[cat.slug] || '';
+      const title = friendly ? `${cat.name} ${friendly}` : cat.name;
+      const schemaItems = faqs.map(f => ({
+        "@type": "Question", "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a }
+      }));
+      const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": schemaItems });
+      return `
+        <div class="faq-section">
+          <h2 class="faq-section__title">Najczęstsze pytania - ${title}</h2>
+          ${faqs.map(f => `
+            <details class="faq-item">
+              <summary>${f.q}</summary>
+              <div class="faq-item__answer">${f.a}</div>
+            </details>`).join('')}
+        </div>
+        <scr` + `ipt type="application/ld+json">${schema}</scr` + `ipt>`;
+    }
+
+    function breadcrumbSchemaJSON(items) {
+      return JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": items.map((item, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "name": item.name,
+          "item": item.url || undefined
+        }))
+      });
     }
 
     // ========== PRODUCT CARD TEMPLATE ==========
@@ -2332,6 +2508,55 @@
           }).join('')}
         </div>` : '';
 
+      // FAQ
+      const faqs = generateFAQ(cat);
+      const faqHTML = faqSectionHTML(faqs, cat);
+
+      // Related categories (siblings)
+      const relatedCats = getRelatedCategories(cat, 6);
+      const relCatsLabel = isShapeCat ? 'Inne kategorie' : 'Inne wzory';
+      const relCatsHTML = relatedCats.length > 0 ? `
+        <div class="related-cats">
+          <h2 class="related-cats__title">${relCatsLabel}</h2>
+          <div class="related-cats__grid">
+            ${relatedCats.map(rc => {
+              const rcFriendly = D.decoNames[rc.slug] || '';
+              const rcLabel = rcFriendly ? `${rc.name} ${rcFriendly}` : rc.name;
+              return `<a href="#/kategoria/${rc.slug}" class="related-cats__link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                ${rcLabel}
+              </a>`;
+            }).join('')}
+          </div>
+        </div>` : '';
+
+      // Richer SEO text
+      const seoText = isShapeCat
+        ? `<div class="seo-text">
+            <h2>${title} - ceramika bolesławiecka</h2>
+            <p>Kolekcja ${title.toLowerCase()} z naszej pracowni w Bolesławcu. Każdy egzemplarz ręcznie malowany i wypalany w 1226°C - bezpieczny do zmywarki, mikrofalówki i piekarnika.</p>
+            <ul>
+              <li>Ręcznie malowane stemplami i pędzlami</li>
+              <li>Wypalane w 1226°C - wyjątkowa trwałość</li>
+              <li>Bezpieczne: zmywarka, mikrofalówka, piekarnik, zamrażarka</li>
+              <li>Stempel fabryki + podpis zdobiarza na każdym egzemplarzu</li>
+              <li>Produkcja: Bolesławiec, Polska</li>
+            </ul>
+          </div>`
+        : `<div class="seo-text">
+            <h2>Wzór ${title} - ceramika bolesławiecka</h2>
+            <p>Dekoracja ${title} to jedna z naszych autorskich zdobień ceramiki bolesławieckiej. Każdy egzemplarz w tym wzorze jest ręcznie malowany - dzięki temu żadne dwa naczynia nie są identyczne.</p>
+            <p>Wzór ${title} dostępny w ${products.length} produktach - od kubków po talerze. Wszystkie wypalane w 1226°C, bezpieczne do zmywarki i mikrofalówki.</p>
+          </div>`;
+
+      // BreadcrumbList schema
+      const bcItems = [
+        { name: 'Strona główna', url: 'https://siwson1.github.io/ceramika-ac/#/' },
+        { name: 'Sklep', url: 'https://siwson1.github.io/ceramika-ac/#/sklep' },
+        { name: title }
+      ];
+      const bcSchema = breadcrumbSchemaJSON(bcItems);
+
       const html = `
         <div class="cat-page">
           <div class="container">
@@ -2358,12 +2583,12 @@
               `<div class="cat-page__grid" id="catGrid">
                 ${products.map(p => productCardHTML(p)).join('')}
               </div>`}
-            <div class="seo-text">
-              <h2>${title} - ceramika bolesławiecka</h2>
-              <p>Kolekcja ${title.toLowerCase()} z naszej pracowni w Bolesławcu. Każdy egzemplarz ręcznie malowany i wypalany w 1226°C - bezpieczny do zmywarki, mikrofalówki i piekarnika.</p>
-            </div>
+            ${seoText}
+            ${faqHTML}
+            ${relCatsHTML}
           </div>
-        </div>`;
+        </div>
+        <scr` + `ipt type="application/ld+json">${bcSchema}</scr` + `ipt>`;
       pages.category.innerHTML = html;
       initCategoryFilters(slug, products);
       initScrollObserver();
@@ -2421,6 +2646,7 @@
       const name = cleanName(p.name);
       const decoLabel = getDecoLabel(p);
       const shapeCat = getShapeCat(p);
+      const decoCat = getDecoCat(p);
       const desc = stripHTML(p.desc);
       const images = p.images.filter(img => img && !img.includes('671133614') && !img.includes('20.53.03'));
       const mainImg = images[0] || '';
@@ -2429,6 +2655,16 @@
       const related = shapeCat
         ? D.products.filter(rp => rp.id !== p.id && rp.cats.some(c => c.id === shapeCat.id)).slice(0, 4)
         : D.products.filter(rp => rp.id !== p.id).slice(0, 4);
+
+      // Cross-sell: same decoration, different shape
+      const crossSell = getCrossSellByDeco(p, 4);
+      const decoFriendly = decoCat ? (D.decoNames[decoCat.slug] || '') : '';
+      const decoTitle = decoCat ? (decoFriendly ? `${decoCat.name} ${decoFriendly}` : decoCat.name) : '';
+
+      // Decoration link for meta
+      const decoLinkHTML = decoCat
+        ? `<strong>Dekoracja:</strong> <a href="#/kategoria/${decoCat.slug}">${decoTitle}</a><br>`
+        : '';
 
       // Schema.org Product JSON-LD
       const schemaJSON = JSON.stringify({
@@ -2447,6 +2683,15 @@
         "material": "Ceramika bolesławiecka",
         "countryOfOrigin": { "@type": "Country", "name": "Polska" }
       });
+
+      // BreadcrumbList schema
+      const bcItems = [
+        { name: 'Strona główna', url: 'https://siwson1.github.io/ceramika-ac/#/' },
+        { name: 'Sklep', url: 'https://siwson1.github.io/ceramika-ac/#/sklep' }
+      ];
+      if (shapeCat) bcItems.push({ name: shapeCat.name, url: `https://siwson1.github.io/ceramika-ac/#/kategoria/${shapeCat.slug}` });
+      bcItems.push({ name: name });
+      const bcSchema = breadcrumbSchemaJSON(bcItems);
 
       const html = `
         <div class="prod-page">
@@ -2500,14 +2745,14 @@
                   <p>Oryginalna ceramika bolesławiecka ręcznie zdobiona za pomocą stempli i pędzli. Wypalana w temperaturze ok. 1226°C - bezpieczna, wytrzymała, nadaje się do zmywarki, piekarnika, mikrofalówki i zamrażarki. Każde naczynie posiada stempel fabryki i podpis zdobiarza.</p>
                 </div>
                 <div class="prod-info__buy">
-                  <a href="${p.link || '#'}" class="btn-dark" target="_blank" rel="nofollow">
+                  <a href="${p.link || '#'}" class="btn-dark" target="_blank" rel="nofollow noopener">
                     Kup w sklepie
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                   </a>
                 </div>
                 <div class="prod-info__meta">
-                  ${shapeCat ? `<strong>Kategoria:</strong> <a href="#/kategoria/${shapeCat.slug}" style="color:var(--cobalt-medium)">${shapeCat.name}</a><br>` : ''}
-                  ${decoLabel ? `<strong>Dekoracja:</strong> ${decoLabel}<br>` : ''}
+                  ${shapeCat ? `<strong>Kategoria:</strong> <a href="#/kategoria/${shapeCat.slug}">${shapeCat.name}</a><br>` : ''}
+                  ${decoLinkHTML}
                   <strong>Materiał:</strong> Ceramika bolesławiecka<br>
                   <strong>Produkcja:</strong> Ręczna, Bolesławiec, Polska
                 </div>
@@ -2525,13 +2770,28 @@
             <div class="related__grid">
               ${related.map(rp => productCardHTML(rp)).join('')}
             </div>
-            <div class="seo-text">
-              <h2>Ceramika bolesławiecka - ${shapeCat ? shapeCat.name.toLowerCase() : 'produkty'}</h2>
-              <p>Oryginalna ceramika z Bolesławca od producenta. Ręcznie malowane naczynia z certyfikatem autentyczności - idealne na prezent lub do własnej kuchni.</p>
+          </div>
+        </div>` : ''}
+        ${crossSell.length > 0 ? `
+        <div class="cross-sell">
+          <div class="container">
+            <div class="cross-sell__header">
+              <div class="section-ornament"><span class="section-label">W tym samym wzorze</span></div>
+              <h2>Inne kształty w dekoracji ${decoTitle}</h2>
+            </div>
+            <div class="cross-sell__grid">
+              ${crossSell.map(rp => productCardHTML(rp)).join('')}
+            </div>
+            <div class="cross-sell__cta">
+              <a href="#/kategoria/${decoCat.slug}">
+                Zobacz wszystkie w wzorze ${decoTitle}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
             </div>
           </div>
         </div>` : ''}
-        <scr` + `ipt type="application/ld+json">${schemaJSON}</scr` + `ipt>`;
+        <scr` + `ipt type="application/ld+json">${schemaJSON}</scr` + `ipt>
+        <scr` + `ipt type="application/ld+json">${bcSchema}</scr` + `ipt>`;
       pages.product.innerHTML = html;
       initScrollObserver();
     }
@@ -2590,6 +2850,64 @@
     if (window.location.hash && window.location.hash !== '#/') {
       route();
     }
+
+    // ========== DYNAMIC FOOTER ==========
+    (function renderFooter() {
+      const topShapes = shapeCats.sort((a, b) => b.count - a.count).slice(0, 8);
+      const topDecos = decoCats.sort((a, b) => b.count - a.count).slice(0, 6);
+      document.getElementById('footerTop').innerHTML = `
+        <div class="footer__brand">
+          <img src="wp-content/uploads/2025/01/logo-ac-napis-kob-duze-01-e1741865753124-1024x208.png" alt="Ceramika AC" class="footer__brand-logo">
+          <p>Producent ceramiki bolesławieckiej. Ręcznie malowana ceramika prosto z Bolesławca.</p>
+          <div class="footer__social">
+            <a href="https://www.facebook.com/ceramikaAC" aria-label="Facebook" rel="nofollow noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@ceramikaac" aria-label="TikTok" rel="nofollow noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.17V11.7a4.83 4.83 0 01-3.44-1.57V6.69h3.44z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/ceramikaac/" aria-label="Instagram" rel="nofollow noopener" target="_blank">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Kategorie</h4>
+          <ul>
+            ${topShapes.map(c => `<li><a href="#/kategoria/${c.slug}">${c.name}</a></li>`).join('')}
+            <li><a href="#/sklep">Wszystkie</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Wzory</h4>
+          <ul>
+            ${topDecos.map(c => {
+              const fn = D.decoNames[c.slug] || '';
+              return `<li><a href="#/kategoria/${c.slug}">${c.name}${fn ? ' ' + fn : ''}</a></li>`;
+            }).join('')}
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Informacje</h4>
+          <ul>
+            <li><a href="https://ceramikaac.com/o-nas/">O nas</a></li>
+            <li><a href="https://ceramikaac.com/kontakt/">Kontakt</a></li>
+            <li><a href="https://ceramikaac.com/regulamin/">Regulamin</a></li>
+            <li><a href="https://ceramikaac.com/polityka-prywatnosci/">Polityka prywatności</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Kontakt</h4>
+          <ul>
+            <li>Bolesławiec, Polska</li>
+            <li><a href="mailto:kontakt@ceramikaac.com">kontakt@ceramikaac.com</a></li>
+            <li style="margin-top:16px;font-size:13px;color:rgba(255,255,255,0.5);">
+              Live: pt / nd / sr - 19:00<br>
+              Facebook + TikTok
+            </li>
+          </ul>
+        </div>`;
+    })();
   </script>
 
   <!-- Schema.org - LocalBusiness -->

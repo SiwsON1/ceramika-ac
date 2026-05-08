@@ -59,6 +59,31 @@
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
+    /* ---- Accessibility ---- */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 200;
+      padding: 12px 24px;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      transition: top 0.2s;
+    }
+    .skip-link:focus {
+      top: 8px;
+    }
+    :focus-visible {
+      outline: 2px solid var(--terracotta);
+      outline-offset: 2px;
+    }
+    a:focus:not(:focus-visible),
+    button:focus:not(:focus-visible) {
+      outline: none;
+    }
+
     /* ---- Utility ---- */
     .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
     @media (min-width: 768px) { .container { padding: 0 40px; } }
@@ -2359,6 +2384,7 @@
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Przeskocz do treści</a>
 
   <!-- ====== NAVIGATION ====== -->
   <nav class="nav" id="nav">
@@ -2391,6 +2417,7 @@
   </div>
 
   <!-- ====== PAGES ====== -->
+  <main id="main-content">
   <div id="page-home" class="page active">
 
   <!-- ====== HERO ====== -->
@@ -2772,13 +2799,14 @@
 
   <!-- Product page (rendered dynamically) -->
   <div id="page-product" class="page"></div>
+  </main>
 
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
     <div class="container">
       <div class="footer__top footer__top--5col" id="footerTop"></div>
       <div class="footer__bottom">
-        <span>&copy; 2025 Ceramika AC. Wszystkie prawa zastrzeżone.</span>
+        <span>&copy; 2026 Ceramika AC. Wszystkie prawa zastrzeżone.</span>
         <span>Ceramika bolesławiecka - ręcznie tworzona z pasją</span>
       </div>
     </div>

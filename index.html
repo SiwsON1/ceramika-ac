@@ -1647,6 +1647,98 @@
     @media (min-width: 640px) { .shop-cats-grid--virtual { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1024px) { .shop-cats-grid--virtual { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
+    /* ---- Round category navigation cards ---- */
+    .shop-cats-round {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px 36px;
+      margin-bottom: 56px;
+    }
+    @media (max-width: 639px) { .shop-cats-round { gap: 20px 16px; } }
+
+    .shop-cat-round {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 140px;
+      text-decoration: none;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .shop-cat-round:hover { transform: translateY(-5px); }
+    @media (max-width: 639px) { .shop-cat-round { width: 100px; gap: 8px; } }
+
+    .shop-cat-round--lg { width: 160px; }
+    @media (max-width: 639px) { .shop-cat-round--lg { width: 110px; } }
+
+    .shop-cat-round--sm { width: 100px; gap: 8px; }
+    @media (max-width: 639px) { .shop-cat-round--sm { width: 80px; gap: 6px; } }
+
+    .shop-cat-round__circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--white);
+      border: 2px solid var(--border);
+      transition: border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .shop-cat-round--lg .shop-cat-round__circle { width: 140px; height: 140px; }
+    .shop-cat-round--sm .shop-cat-round__circle { width: 88px; height: 88px; }
+    @media (max-width: 639px) {
+      .shop-cat-round__circle { width: 88px; height: 88px; }
+      .shop-cat-round--lg .shop-cat-round__circle { width: 96px; height: 96px; }
+      .shop-cat-round--sm .shop-cat-round__circle { width: 68px; height: 68px; }
+    }
+
+    .shop-cat-round:hover .shop-cat-round__circle {
+      border-color: var(--terracotta);
+      box-shadow: 0 8px 28px rgba(196, 101, 74, 0.15);
+    }
+
+    .shop-cat-round__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .shop-cat-round:hover .shop-cat-round__img { transform: scale(1.08); }
+    .shop-cat-round__img--contain { object-fit: contain; padding: 14px; }
+
+    .shop-cat-round__placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--cream-dark), var(--border));
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--cobalt-medium);
+      opacity: 0.5;
+    }
+
+    .shop-cat-round__name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cobalt);
+      text-align: center;
+      line-height: 1.25;
+    }
+    .shop-cat-round--sm .shop-cat-round__name { font-size: 13px; }
+    @media (max-width: 639px) { .shop-cat-round__name { font-size: 13px; } }
+
+    .shop-cat-round__count {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: -4px;
+    }
+
     .cat-page__section-subtitle {
       font-size: 14px;
       color: var(--text-muted);
@@ -1666,11 +1758,8 @@
     .cat-page__intro {
       max-width: 720px;
       margin-bottom: 40px;
-      padding: 24px 28px;
-      background: var(--white);
-      border-left: 3px solid var(--terracotta);
       font-size: 15px;
-      line-height: 1.8;
+      line-height: 1.85;
       color: var(--text-muted);
     }
     .cat-page__intro p { margin: 0; }
@@ -1962,47 +2051,50 @@
       margin-bottom: 20px;
     }
     .related-cats__grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px 28px;
     }
-    @media (min-width: 576px) { .related-cats__grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (min-width: 1024px) { .related-cats__grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 639px) { .related-cats__grid { gap: 16px 14px; } }
     .related-cats__link {
       display: flex;
       flex-direction: column;
-      gap: 0;
-      background: var(--white);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s;
+      align-items: center;
+      gap: 10px;
+      width: 110px;
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .related-cats__link:hover {
-      border-color: var(--terracotta);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(27,42,74,0.08);
-    }
+    @media (max-width: 639px) { .related-cats__link { width: 85px; gap: 6px; } }
+    .related-cats__link:hover { transform: translateY(-3px); }
     .related-cats__img {
-      width: 100%;
-      aspect-ratio: 1;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
       object-fit: cover;
-      background: var(--cream-dark);
+      background: var(--white);
+      border: 2px solid var(--border);
+      mix-blend-mode: multiply;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    @media (max-width: 639px) { .related-cats__img { width: 70px; height: 70px; } }
+    .related-cats__link:hover .related-cats__img {
+      border-color: var(--terracotta);
+      box-shadow: 0 6px 20px rgba(196, 101, 74, 0.12);
     }
     .related-cats__info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 14px;
+      text-align: center;
       font-size: 13px;
       font-weight: 500;
       color: var(--cobalt);
+      line-height: 1.3;
     }
-    .related-cats__info svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.5; }
+    @media (max-width: 639px) { .related-cats__info { font-size: 12px; } }
     .related-cats__link:hover .related-cats__info { color: var(--terracotta); }
     .related-cats__count {
       font-size: 11px;
       color: var(--text-light);
       font-weight: 400;
+      display: block;
     }
 
     /* ============================================
@@ -2691,6 +2783,24 @@
     }
 
     // ========== RENDER: SHOP (all categories) ==========
+    function shopCatCardRound(c, friendly, size) {
+      const label = friendly ? `${c.name} ${friendly}` : c.name;
+      const isPng = c.image && c.image.toLowerCase().endsWith('.png');
+      const imgClass = isPng ? 'shop-cat-round__img shop-cat-round__img--contain' : 'shop-cat-round__img';
+      const href = c._virtual ? `#/kolekcja/${c.slug}` : `#/kategoria/${c.slug}`;
+      const sizeClass = size === 'lg' ? 'shop-cat-round--lg' : size === 'sm' ? 'shop-cat-round--sm' : '';
+      return `
+        <a href="${href}" class="shop-cat-round ${sizeClass}">
+          <div class="shop-cat-round__circle">
+            ${c.image
+              ? `<img src="${c.image}" alt="${label} - ceramika bolesławiecka" class="${imgClass}" loading="lazy">`
+              : `<div class="shop-cat-round__placeholder">${c.name.charAt(0)}</div>`}
+          </div>
+          <span class="shop-cat-round__name">${label}</span>
+          <span class="shop-cat-round__count">${c.count} szt.</span>
+        </a>`;
+    }
+
     function shopCatCard(c, friendly, badge) {
       const label = friendly ? `${c.name} ${friendly}` : c.name;
       const isPng = c.image && c.image.toLowerCase().endsWith('.png');
@@ -2729,20 +2839,20 @@
               <div class="cat-page__count">${D.products.length} produktów w ${D.categories.filter(c=>c.parent>0).length} kategoriach</div>
             </div>
 
-            <h2 class="cat-page__section-title">Odkrywaj wg okazji</h2>
-            <p class="cat-page__section-subtitle">Znajdź ceramikę idealną na konkretną okazję - te same produkty, pogrupowane wg zastosowania</p>
-            <div class="shop-cats-grid shop-cats-grid--virtual">
-              ${virtualCategories.map(vc => shopCatCard({...vc, _virtual: true}, '', 'Nowa')).join('')}
-            </div>
-
             <h2 class="cat-page__section-title">Kształty</h2>
-            <div class="shop-cats-grid">
-              ${shapeCats.map(c => shopCatCard(c, '')).join('')}
+            <div class="shop-cats-round">
+              ${shapeCats.map(c => shopCatCardRound(c, '', 'lg')).join('')}
             </div>
 
             <h2 class="cat-page__section-title">Wzory / Dekoracje</h2>
-            <div class="shop-cats-grid shop-cats-grid--deco">
-              ${decoCats.map(c => shopCatCard(c, D.decoNames[c.slug] || '')).join('')}
+            <div class="shop-cats-round">
+              ${decoCats.map(c => shopCatCardRound(c, D.decoNames[c.slug] || '')).join('')}
+            </div>
+
+            <h2 class="cat-page__section-title">Kolekcje tematyczne</h2>
+            <p class="cat-page__section-subtitle">Te same produkty pogrupowane wg zastosowania</p>
+            <div class="shop-cats-round">
+              ${virtualCategories.map(vc => shopCatCardRound({...vc, _virtual: true}, '')).join('')}
             </div>
 
             <div class="seo-text">
@@ -2896,9 +3006,8 @@
               return `<a href="#/kategoria/${rc.slug}" class="related-cats__link">
                 ${rcImg ? `<img src="${rcImg}" alt="${rcLabel}" class="related-cats__img" loading="lazy">` : ''}
                 <div class="related-cats__info">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                   <span>${rcLabel}</span>
-                  <span class="related-cats__count">(${rc.count})</span>
+                  <span class="related-cats__count">${rc.count} szt.</span>
                 </div>
               </a>`;
             }).join('')}
@@ -2988,9 +3097,8 @@
             ${virtualCategories.filter(v => v.slug !== slug).map(v => `<a href="#/kolekcja/${v.slug}" class="related-cats__link">
               ${v.image ? `<img src="${v.image}" alt="${v.name}" class="related-cats__img" loading="lazy">` : ''}
               <div class="related-cats__info">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                 <span>${v.name}</span>
-                <span class="related-cats__count">(${v.count})</span>
+                <span class="related-cats__count">${v.count} szt.</span>
               </div>
             </a>`).join('')}
           </div>

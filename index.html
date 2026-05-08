@@ -250,9 +250,8 @@
       top: 100%;
       left: 0;
       right: 0;
-      background: rgba(250, 246, 240, 0.98);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: var(--cream);
+      backdrop-filter: none;
       border-top: 1px solid var(--border);
       box-shadow: 0 20px 60px rgba(27, 42, 74, 0.08);
       opacity: 0;
@@ -356,6 +355,11 @@
       transition: color 0.2s;
     }
     .mega-menu__footer-link:hover { color: var(--terracotta); }
+
+    /* Override nav hero styles inside mega menu */
+    .nav.nav--hero .nav__links .mega-menu__link { color: var(--cobalt); }
+    .nav.nav--hero .nav__links .mega-menu__link:hover { color: var(--terracotta); }
+    .nav__links .mega-menu__link::after { content: none; }
 
     @media (max-width: 767px) {
       .mega-menu { display: none; }

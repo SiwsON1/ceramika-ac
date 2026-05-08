@@ -760,6 +760,16 @@
       transition: transform 0.6s var(--ease-out);
     }
     .product-card:hover .product-card__img { transform: scale(1.08); }
+    .product-card__img--hover {
+      position: absolute;
+      inset: 0;
+      width: 85%;
+      height: 85%;
+      margin: auto;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .product-card:hover .product-card__img--hover { opacity: 1; }
 
     .product-card__quick {
       position: absolute;
@@ -787,6 +797,14 @@
     .product-card__info {
       padding: 16px 20px 20px;
     }
+    .product-card__deco {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
     .product-card__name {
       font-family: var(--font-display);
       font-size: 16px;
@@ -795,10 +813,25 @@
       margin-bottom: 6px;
       line-height: 1.3;
     }
+    .product-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
     .product-card__price {
       font-size: 15px;
       font-weight: 600;
       color: var(--terracotta);
+    }
+    .product-card__status {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: var(--cobalt-medium);
+      padding: 3px 8px;
+      background: var(--cream-dark);
+      white-space: nowrap;
     }
     .product-card__tag {
       position: absolute;
@@ -1646,6 +1679,54 @@
       margin-top: 8px;
     }
 
+    /* ---- Category Intro (above products) ---- */
+    .cat-page__intro {
+      max-width: 720px;
+      margin-bottom: 40px;
+      padding: 24px 28px;
+      background: var(--white);
+      border-left: 3px solid var(--terracotta);
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+    .cat-page__intro p { margin: 0; }
+
+    /* ---- Trust Strip (category pages) ---- */
+    .cat-trust-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      margin-bottom: 36px;
+      padding: 16px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    @media (min-width: 768px) {
+      .cat-trust-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+    }
+    .cat-trust-strip__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--cobalt-medium);
+    }
+    .cat-trust-strip__item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--terracotta);
+      flex-shrink: 0;
+    }
+
+    /* ---- Toolbar ---- */
     .cat-page__toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -1654,6 +1735,41 @@
       margin-bottom: 32px;
       justify-content: space-between;
     }
+    .cat-page__toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cat-page__results {
+      font-size: 13px;
+      color: var(--text-light);
+      white-space: nowrap;
+    }
+    .cat-page__view-toggle {
+      display: none;
+      gap: 4px;
+    }
+    @media (min-width: 768px) {
+      .cat-page__view-toggle { display: flex; }
+    }
+    .cat-page__view-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--text-light);
+      transition: all 0.2s;
+    }
+    .cat-page__view-btn.active,
+    .cat-page__view-btn:hover {
+      border-color: var(--cobalt);
+      color: var(--cobalt);
+      background: var(--cream-dark);
+    }
+    .cat-page__view-btn svg { width: 16px; height: 16px; }
 
     .cat-sort {
       padding: 10px 16px;
@@ -1680,12 +1796,29 @@
       border-top: 1px solid var(--border);
       margin-top: 60px;
     }
+    .seo-text__inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 768px) {
+      .seo-text__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+    }
+    .seo-text__inner--full {
+      grid-template-columns: 1fr;
+    }
     .seo-text h2 {
       font-family: var(--font-display);
       font-size: clamp(22px, 3vw, 32px);
       font-weight: 500;
       color: var(--cobalt);
       margin-bottom: 16px;
+    }
+    @media (min-width: 768px) {
+      .seo-text h2 { grid-column: 1 / -1; }
     }
     .seo-text h3 {
       font-family: var(--font-display);
@@ -1702,15 +1835,63 @@
       margin-bottom: 16px;
     }
     .seo-text ul {
-      list-style: disc;
-      padding-left: 24px;
+      list-style: none;
+      padding-left: 0;
       margin-bottom: 16px;
     }
     .seo-text ul li {
       font-size: 15px;
       line-height: 1.8;
       color: var(--text-muted);
-      margin-bottom: 4px;
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .seo-text ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      background: var(--terracotta);
+      border-radius: 50%;
+    }
+    /* USP grid inside SEO text */
+    .seo-usp-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    @media (min-width: 480px) {
+      .seo-usp-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .seo-usp-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+    .seo-usp-item svg {
+      width: 20px;
+      height: 20px;
+      color: var(--terracotta);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .seo-usp-item__text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+    .seo-usp-item__text strong {
+      display: block;
+      font-size: 14px;
+      color: var(--cobalt);
+      margin-bottom: 2px;
     }
 
     .prod-page__cat-bar {
@@ -1806,22 +1987,40 @@
     @media (min-width: 1024px) { .related-cats__grid { grid-template-columns: repeat(6, 1fr); } }
     .related-cats__link {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 16px;
+      flex-direction: column;
+      gap: 0;
       background: var(--white);
       border: 1px solid var(--border);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--cobalt);
-      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s var(--ease-out), box-shadow 0.3s;
     }
     .related-cats__link:hover {
       border-color: var(--terracotta);
-      color: var(--terracotta);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(27,42,74,0.08);
     }
-    .related-cats__link svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.5; }
+    .related-cats__img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      background: var(--cream-dark);
+    }
+    .related-cats__info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cobalt);
+    }
+    .related-cats__info svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.5; }
+    .related-cats__link:hover .related-cats__info { color: var(--terracotta); }
+    .related-cats__count {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 400;
+    }
 
     /* ============================================
        CROSS-SELL (product page)
@@ -2487,17 +2686,23 @@
     function productCardHTML(p) {
       const name = cleanName(p.name);
       const img = p.images[0] || '';
+      const decoLabel = getDecoLabel(p);
+      const hasSecondImg = p.images && p.images.length > 1;
       return `
         <a href="#/produkt/${p.slug}" class="product-card">
           <div class="product-card__img-wrap">
             <img src="${img}" alt="${name}" class="product-card__img" loading="lazy">
+            ${hasSecondImg ? `<img src="${p.images[1]}" alt="${name}" class="product-card__img product-card__img--hover" loading="lazy">` : ''}
             <div class="product-card__quick">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </div>
           <div class="product-card__info">
+            ${decoLabel ? `<div class="product-card__deco">${decoLabel}</div>` : ''}
             <div class="product-card__name">${name}</div>
-            <div class="product-card__price">${p.price} zł</div>
+            <div class="product-card__meta">
+              <div class="product-card__price">${p.price} zł</div>
+            </div>
           </div>
         </a>`;
     }
@@ -2621,23 +2826,45 @@
           </div>
         </div>` : '';
 
-      // Richer SEO text
+      // SEO text section - editorial 2-column layout
       const seoText = isShapeCat
         ? `<div class="seo-text">
             <h2>${title} - ceramika bolesławiecka</h2>
-            <p>Kolekcja ${title.toLowerCase()} z naszej pracowni w Bolesławcu. Każdy egzemplarz ręcznie malowany i wypalany w 1226°C - bezpieczny do zmywarki, mikrofalówki i piekarnika.</p>
-            <ul>
-              <li>Ręcznie malowane stemplami i pędzlami</li>
-              <li>Wypalane w 1226°C - wyjątkowa trwałość</li>
-              <li>Bezpieczne: zmywarka, mikrofalówka, piekarnik, zamrażarka</li>
-              <li>Stempel fabryki + podpis zdobiarza na każdym egzemplarzu</li>
-              <li>Produkcja: Bolesławiec, Polska</li>
-            </ul>
+            <div class="seo-text__inner">
+              <div>
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+              </div>
+              <div>
+                <div class="seo-usp-grid">
+                  <div class="seo-usp-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <div class="seo-usp-item__text"><strong>Ręczna produkcja</strong>Stemple i pędzle, pracownia w Bolesławcu</div>
+                  </div>
+                  <div class="seo-usp-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    <div class="seo-usp-item__text"><strong>Wypalanie 1226°C</strong>Trwałość, odporność na odpryski</div>
+                  </div>
+                  <div class="seo-usp-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                    <div class="seo-usp-item__text"><strong>Zmywarka, piekarnik</strong>Mikrofalówka i zamrażarka</div>
+                  </div>
+                  <div class="seo-usp-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <div class="seo-usp-item__text"><strong>Stempel + podpis</strong>Fabryka i zdobiarza na każdym</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>`
         : `<div class="seo-text">
             <h2>Wzór ${title} - ceramika bolesławiecka</h2>
-            <p>Dekoracja ${title} to jedna z naszych autorskich zdobień ceramiki bolesławieckiej. Każdy egzemplarz w tym wzorze jest ręcznie malowany - dzięki temu żadne dwa naczynia nie są identyczne.</p>
-            <p>Wzór ${title} dostępny w ${products.length} produktach - od kubków po talerze. Wszystkie wypalane w 1226°C, bezpieczne do zmywarki i mikrofalówki.</p>
+            <div class="seo-text__inner seo-text__inner--full">
+              <div>
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Każdy egzemplarz w tym wzorze jest ręcznie malowany - dzięki temu żadne dwa naczynia nie są identyczne.</p>
+                <p>Wzór ${title} dostępny w ${products.length} produktach. Wszystkie wypalane w 1226°C, bezpieczne do zmywarki i mikrofalówki.</p>
+              </div>
+            </div>
           </div>`;
 
       // BreadcrumbList schema
@@ -2647,6 +2874,53 @@
         { name: title }
       ];
       const bcSchema = breadcrumbSchemaJSON(bcItems);
+
+      // Intro text (above products, 50-80 words hook)
+      const introText = isShapeCat
+        ? `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Każdy egzemplarz ręcznie malowany tradycyjną techniką stempelkową i pędzlami w pracowni w Bolesławcu.`
+        : `Lorem ipsum dolor sit amet. Wzór ${title} to jedna z autorskich dekoracji Ceramiki AC - ręcznie malowana, unikalna.`;
+
+      // Trust strip items
+      const trustStripHTML = `
+        <div class="cat-trust-strip">
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Producent z Bolesławca
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Ręczne malowanie
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            Zmywarka + piekarnik
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Wysyłka 24-48h
+          </div>
+        </div>`;
+
+      // Related categories with images
+      const relCatsWithImgsHTML = relatedCats.length > 0 ? `
+        <div class="related-cats">
+          <h2 class="related-cats__title">${relCatsLabel}</h2>
+          <div class="related-cats__grid">
+            ${relatedCats.map(rc => {
+              const rcFriendly = D.decoNames[rc.slug] || '';
+              const rcLabel = rcFriendly ? `${rc.name} ${rcFriendly}` : rc.name;
+              const rcImg = rc.image || '';
+              return `<a href="#/kategoria/${rc.slug}" class="related-cats__link">
+                ${rcImg ? `<img src="${rcImg}" alt="${rcLabel}" class="related-cats__img" loading="lazy">` : ''}
+                <div class="related-cats__info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                  <span>${rcLabel}</span>
+                  <span class="related-cats__count">(${rc.count})</span>
+                </div>
+              </a>`;
+            }).join('')}
+          </div>
+        </div>` : '';
 
       const html = `
         <div class="cat-page">
@@ -2661,14 +2935,24 @@
               </div>
               <div class="cat-page__count">${products.length} produktów</div>
             </div>
+
+            <div class="cat-page__intro">
+              <p>${introText}</p>
+            </div>
+
+            ${trustStripHTML}
+
             <div class="cat-page__toolbar">
               <div>${filtersHTML}</div>
-              <select class="cat-sort" id="catSort">
-                <option value="default">Sortowanie: domyślne</option>
-                <option value="price-asc">Cena: od najniższej</option>
-                <option value="price-desc">Cena: od najwyższej</option>
-                <option value="name-az">Nazwa: A-Z</option>
-              </select>
+              <div class="cat-page__toolbar-right">
+                <span class="cat-page__results">Pokazuje ${products.length} produktów</span>
+                <select class="cat-sort" id="catSort">
+                  <option value="default">Sortowanie: domyślne</option>
+                  <option value="price-asc">Cena: od najniższej</option>
+                  <option value="price-desc">Cena: od najwyższej</option>
+                  <option value="name-az">Nazwa: A-Z</option>
+                </select>
+              </div>
             </div>
             ${products.length === 0 ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów w tej kategorii.</p>' :
               `<div class="cat-page__grid" id="catGrid">
@@ -2676,7 +2960,7 @@
               </div>`}
             ${seoText}
             ${faqHTML}
-            ${relCatsHTML}
+            ${relCatsWithImgsHTML}
           </div>
         </div>
         <scr` + `ipt type="application/ld+json">${bcSchema}</scr` + `ipt>`;
@@ -2713,22 +2997,63 @@
           ${filters.map(f => `<button class="cat-filter" data-filter="${f.slug}">${f.name} (${f.count})</button>`).join('')}
         </div>` : '';
 
-      // Related virtual categories
+      // Related virtual categories with images
       const relVirtHTML = virtualCategories.filter(v => v.slug !== slug).length > 0 ? `
         <div class="related-cats">
           <h2 class="related-cats__title">Inne kolekcje tematyczne</h2>
           <div class="related-cats__grid">
             ${virtualCategories.filter(v => v.slug !== slug).map(v => `<a href="#/kolekcja/${v.slug}" class="related-cats__link">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              ${v.name}
+              ${v.image ? `<img src="${v.image}" alt="${v.name}" class="related-cats__img" loading="lazy">` : ''}
+              <div class="related-cats__info">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                <span>${v.name}</span>
+                <span class="related-cats__count">(${v.count})</span>
+              </div>
             </a>`).join('')}
           </div>
         </div>` : '';
 
       const seoText = `<div class="seo-text">
         <h2>${title} - ceramika bolesławiecka</h2>
-        <p>${vc.description}. Każdy egzemplarz ręcznie malowany i wypalany w 1226°C - bezpieczny do zmywarki, mikrofalówki i piekarnika.</p>
+        <div class="seo-text__inner">
+          <div>
+            <p>Lorem ipsum dolor sit amet consectetur adipiscing elit. ${vc.description}. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div>
+            <div class="seo-usp-grid">
+              <div class="seo-usp-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <div class="seo-usp-item__text"><strong>Ręczna produkcja</strong>Stemple i pędzle, pracownia w Bolesławcu</div>
+              </div>
+              <div class="seo-usp-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                <div class="seo-usp-item__text"><strong>Zmywarka, piekarnik</strong>Mikrofalówka i zamrażarka</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>`;
+
+      // Trust strip (same as regular categories)
+      const vcTrustStripHTML = `
+        <div class="cat-trust-strip">
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Producent z Bolesławca
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Ręczne malowanie
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            Zmywarka + piekarnik
+          </div>
+          <div class="cat-trust-strip__item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Wysyłka 24-48h
+          </div>
+        </div>`;
 
       const html = `
         <div class="cat-page">
@@ -2738,20 +3063,29 @@
             </div>
             <div class="cat-page__header">
               <div>
-                <div class="section-ornament"><span class="section-label" style="background:var(--terracotta);color:var(--white);">Nowa kategoria</span></div>
+                <div class="section-ornament"><span class="section-label" style="background:var(--terracotta);color:var(--white);">Kolekcja</span></div>
                 <h1>${title}</h1>
-                <p class="cat-page__subtitle" style="margin-top:8px;max-width:500px;">${vc.description}</p>
               </div>
               <div class="cat-page__count">${products.length} produktów</div>
             </div>
+
+            <div class="cat-page__intro">
+              <p>${vc.description}</p>
+            </div>
+
+            ${vcTrustStripHTML}
+
             <div class="cat-page__toolbar">
               <div>${filtersHTML}</div>
-              <select class="cat-sort" id="catSort">
-                <option value="default">Sortowanie: domyślne</option>
-                <option value="price-asc">Cena: od najniższej</option>
-                <option value="price-desc">Cena: od najwyższej</option>
-                <option value="name-az">Nazwa: A-Z</option>
-              </select>
+              <div class="cat-page__toolbar-right">
+                <span class="cat-page__results">Pokazuje ${products.length} produktów</span>
+                <select class="cat-sort" id="catSort">
+                  <option value="default">Sortowanie: domyślne</option>
+                  <option value="price-asc">Cena: od najniższej</option>
+                  <option value="price-desc">Cena: od najwyższej</option>
+                  <option value="name-az">Nazwa: A-Z</option>
+                </select>
+              </div>
             </div>
             ${products.length === 0 ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów w tej kategorii.</p>' :
               `<div class="cat-page__grid" id="catGrid">

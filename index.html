@@ -1606,6 +1606,38 @@
       opacity: 0.5;
     }
 
+    /* Badge "Nowa kategoria" */
+    .cat-card__badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      background: var(--terracotta);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    /* Virtual categories section */
+    .shop-cats-grid--virtual {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 640px) { .shop-cats-grid--virtual { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1024px) { .shop-cats-grid--virtual { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+
+    .cat-page__section-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: -14px;
+      margin-bottom: 20px;
+    }
+
     .cat-page__subtitle {
       font-size: 15px;
       color: var(--text-muted);
@@ -2289,6 +2321,56 @@
     // Decoration categories (parent=44)
     const decoCats = D.categories.filter(c => c.parent === 44);
 
+    // Virtual (scenario-based) categories - cross-listing existing products
+    const virtualCategories = [
+      {
+        slug: 'kawa-i-herbata',
+        name: 'Kawa i herbata',
+        description: 'Kubki, filiżanki, czajniki i cukiernice - wszystko do kawy i herbaty',
+        shapeSlugs: ['kubki', 'filizanki', 'czajniki-dzbanki', 'cukiernice-mleczniki', 'zestawy-komplety'],
+        imageSlug: 'filizanki',
+      },
+      {
+        slug: 'obiad-i-serwowanie',
+        name: 'Obiad i serwowanie',
+        description: 'Talerze, miski, salaterki i półmiski na co dzień i od święta',
+        shapeSlugs: ['talerze', 'miski-salaterki', 'polmiski', 'naczynia-do-zapiekania'],
+        imageSlug: 'talerze',
+      },
+      {
+        slug: 'dekoracja-domu',
+        name: 'Dekoracja domu',
+        description: 'Donice, wazony, figurki i podstawki - ceramiczny akcent w domu',
+        shapeSlugs: ['donice-wazony', 'figurki', 'podstawki'],
+        imageSlug: 'figurki',
+      },
+      {
+        slug: 'przechowywanie-i-kuchnia',
+        name: 'Przechowywanie i kuchnia',
+        description: 'Pojemniki, maselnice i jajeczniki - praktyczna ceramika na co dzień',
+        shapeSlugs: ['pojemniki', 'maselnice-jajeczniki'],
+        imageSlug: 'pojemniki',
+      },
+      {
+        slug: 'prezenty',
+        name: 'Prezenty',
+        description: 'Zestawy i figurki - idealny prezent z ceramiki bolesławieckiej',
+        shapeSlugs: ['zestawy-komplety', 'figurki'],
+        imageSlug: 'zestawy-komplety',
+      },
+    ];
+
+    // Enrich virtual categories with product counts and images
+    virtualCategories.forEach(vc => {
+      const products = new Set();
+      D.products.forEach(p => {
+        if (p.cats.some(c => vc.shapeSlugs.includes(c.slug))) products.add(p.id);
+      });
+      vc.count = products.size;
+      const imgCat = D.categories.find(c => c.slug === vc.imageSlug);
+      vc.image = imgCat ? imgCat.image : null;
+    });
+
     // ========== NAV ==========
     window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
     function updateNavHero() {
@@ -2421,12 +2503,15 @@
     }
 
     // ========== RENDER: SHOP (all categories) ==========
-    function shopCatCard(c, friendly) {
+    function shopCatCard(c, friendly, badge) {
       const label = friendly ? `${c.name} ${friendly}` : c.name;
       const isPng = c.image && c.image.toLowerCase().endsWith('.png');
       const imgClass = isPng ? 'cat-card__img cat-card__img--contain' : 'cat-card__img';
+      const badgeHTML = badge ? `<span class="cat-card__badge">${badge}</span>` : '';
+      const href = c._virtual ? `#/kolekcja/${c.slug}` : `#/kategoria/${c.slug}`;
       return `
-        <a href="#/kategoria/${c.slug}" class="cat-card">
+        <a href="${href}" class="cat-card">
+          ${badgeHTML}
           ${c.image
             ? `<img src="${c.image}" alt="${label} - ceramika bolesławiecka" class="${imgClass}" loading="lazy">`
             : `<div class="cat-card__img--placeholder">${c.name}</div>`}
@@ -2454,6 +2539,12 @@
                 <p class="cat-page__subtitle">Ponad ${D.products.length} produktów ceramiki bolesławieckiej - ręcznie malowane kubki, filiżanki, talerze, czajniki i wiele więcej.</p>
               </div>
               <div class="cat-page__count">${D.products.length} produktów w ${D.categories.filter(c=>c.parent>0).length} kategoriach</div>
+            </div>
+
+            <h2 class="cat-page__section-title">Odkrywaj wg okazji</h2>
+            <p class="cat-page__section-subtitle">Znajdź ceramikę idealną na konkretną okazję - te same produkty, pogrupowane wg zastosowania</p>
+            <div class="shop-cats-grid shop-cats-grid--virtual">
+              ${virtualCategories.map(vc => shopCatCard({...vc, _virtual: true}, '', 'Nowa')).join('')}
             </div>
 
             <h2 class="cat-page__section-title">Kształty</h2>
@@ -2592,6 +2683,127 @@
       pages.category.innerHTML = html;
       initCategoryFilters(slug, products);
       initScrollObserver();
+    }
+
+    // ========== RENDER: VIRTUAL CATEGORY ==========
+    function renderVirtualCategory(slug) {
+      const vc = virtualCategories.find(v => v.slug === slug);
+      if (!vc) { renderShop(); return; }
+
+      const products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug)));
+      const title = vc.name;
+
+      // Shape sub-filters (which shape categories are represented)
+      const shapeFilters = [];
+      const shapeMap = {};
+      products.forEach(p => {
+        p.cats.filter(c => vc.shapeSlugs.includes(c.slug)).forEach(sc => {
+          if (!shapeMap[sc.slug]) {
+            const cat = D.categories.find(dc => dc.slug === sc.slug);
+            shapeMap[sc.slug] = { slug: sc.slug, name: cat ? cat.name : sc.slug, count: 0 };
+          }
+          shapeMap[sc.slug].count++;
+        });
+      });
+      const filters = Object.values(shapeMap).filter(d => d.count > 0).sort((a, b) => b.count - a.count);
+
+      const filtersHTML = filters.length > 1 ? `
+        <div class="cat-page__filters" id="catFilters">
+          <button class="cat-filter active" data-filter="all">Wszystkie (${products.length})</button>
+          ${filters.map(f => `<button class="cat-filter" data-filter="${f.slug}">${f.name} (${f.count})</button>`).join('')}
+        </div>` : '';
+
+      // Related virtual categories
+      const relVirtHTML = virtualCategories.filter(v => v.slug !== slug).length > 0 ? `
+        <div class="related-cats">
+          <h2 class="related-cats__title">Inne kolekcje tematyczne</h2>
+          <div class="related-cats__grid">
+            ${virtualCategories.filter(v => v.slug !== slug).map(v => `<a href="#/kolekcja/${v.slug}" class="related-cats__link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              ${v.name}
+            </a>`).join('')}
+          </div>
+        </div>` : '';
+
+      const seoText = `<div class="seo-text">
+        <h2>${title} - ceramika bolesławiecka</h2>
+        <p>${vc.description}. Każdy egzemplarz ręcznie malowany i wypalany w 1226°C - bezpieczny do zmywarki, mikrofalówki i piekarnika.</p>
+      </div>`;
+
+      const html = `
+        <div class="cat-page">
+          <div class="container">
+            <div class="breadcrumbs">
+              <a href="#/">Strona główna</a> <span>/</span> <a href="#/sklep">Sklep</a> <span>/</span> ${title}
+            </div>
+            <div class="cat-page__header">
+              <div>
+                <div class="section-ornament"><span class="section-label" style="background:var(--terracotta);color:var(--white);">Nowa kategoria</span></div>
+                <h1>${title}</h1>
+                <p class="cat-page__subtitle" style="margin-top:8px;max-width:500px;">${vc.description}</p>
+              </div>
+              <div class="cat-page__count">${products.length} produktów</div>
+            </div>
+            <div class="cat-page__toolbar">
+              <div>${filtersHTML}</div>
+              <select class="cat-sort" id="catSort">
+                <option value="default">Sortowanie: domyślne</option>
+                <option value="price-asc">Cena: od najniższej</option>
+                <option value="price-desc">Cena: od najwyższej</option>
+                <option value="name-az">Nazwa: A-Z</option>
+              </select>
+            </div>
+            ${products.length === 0 ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów w tej kategorii.</p>' :
+              `<div class="cat-page__grid" id="catGrid">
+                ${products.map(p => productCardHTML(p)).join('')}
+              </div>`}
+            ${seoText}
+            ${relVirtHTML}
+          </div>
+        </div>`;
+      pages.category.innerHTML = html;
+      initVirtualCategoryFilters(vc, products);
+      initScrollObserver();
+    }
+
+    function initVirtualCategoryFilters(vc, products) {
+      const grid = document.getElementById('catGrid');
+      const sortEl = document.getElementById('catSort');
+      const filtersContainer = document.getElementById('catFilters');
+      if (!grid) return;
+
+      let activeFilter = 'all';
+
+      function getFilteredSorted() {
+        let filtered = activeFilter === 'all'
+          ? [...products]
+          : products.filter(p => p.cats.some(c => c.slug === activeFilter));
+
+        const sortVal = sortEl ? sortEl.value : 'default';
+        if (sortVal === 'price-asc') filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        else if (sortVal === 'price-desc') filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        else if (sortVal === 'name-az') filtered.sort((a, b) => cleanName(a.name).localeCompare(cleanName(b.name), 'pl'));
+        return filtered;
+      }
+
+      function rerender() {
+        const items = getFilteredSorted();
+        grid.innerHTML = items.length === 0
+          ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów dla wybranego filtra.</p>'
+          : items.map(p => productCardHTML(p)).join('');
+      }
+
+      if (filtersContainer) {
+        filtersContainer.addEventListener('click', e => {
+          const btn = e.target.closest('.cat-filter');
+          if (!btn) return;
+          filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeFilter = btn.dataset.filter;
+          rerender();
+        });
+      }
+      if (sortEl) sortEl.addEventListener('change', rerender);
     }
 
     function initCategoryFilters(slug, products) {
@@ -2824,6 +3036,13 @@
         renderShop();
         pages.category.classList.add('active');
         document.title = 'Sklep - Ceramika AC | Ceramika Bolesławiecka';
+        window.scrollTo(0, 0);
+      } else if (path.startsWith('/kolekcja/')) {
+        const slug = path.replace('/kolekcja/', '');
+        renderVirtualCategory(slug);
+        pages.category.classList.add('active');
+        const vc = virtualCategories.find(v => v.slug === slug);
+        document.title = `${vc ? vc.name : 'Kolekcja'} - Ceramika AC | Ceramika Bolesławiecka`;
         window.scrollTo(0, 0);
       } else if (path.startsWith('/kategoria/')) {
         const slug = path.replace('/kategoria/', '');

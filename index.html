@@ -379,29 +379,106 @@
       z-index: 99;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 80px 24px 40px;
     }
     .mobile-menu.open { opacity: 1; pointer-events: all; }
-    .mobile-menu a {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 500;
-      color: var(--cobalt);
-      transition: color 0.3s ease;
-    }
-    .mobile-menu a:hover { color: var(--terracotta); }
     .mobile-menu__close {
-      position: absolute;
-      top: 24px;
-      right: 24px;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
       font-size: 28px;
       color: var(--cobalt);
       padding: 8px;
+    }
+
+    .mobile-menu__nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 32px;
+    }
+    .mobile-menu__nav > a {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--cobalt);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu__nav > a:hover { color: var(--terracotta); }
+
+    .mobile-menu__accordion {
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu__accordion-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--cobalt);
+      padding: 14px 0;
+      text-align: left;
+    }
+    .mobile-menu__accordion-trigger svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      color: var(--text-muted);
+    }
+    .mobile-menu__accordion.open .mobile-menu__accordion-trigger svg {
+      transform: rotate(180deg);
+    }
+    .mobile-menu__accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .mobile-menu__accordion.open .mobile-menu__accordion-body {
+      max-height: 600px;
+    }
+    .mobile-menu__cat-group {
+      padding: 0 0 16px;
+    }
+    .mobile-menu__cat-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      padding: 8px 0;
+    }
+    .mobile-menu__cat-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mobile-menu__cat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cobalt);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .mobile-menu__cat-chip:hover,
+    .mobile-menu__cat-chip:active {
+      border-color: var(--terracotta);
+      background: rgba(196, 101, 74, 0.06);
     }
 
     /* ============================================
@@ -2310,10 +2387,7 @@
   <!-- Mobile menu -->
   <div class="mobile-menu" id="mobileMenu">
     <button class="mobile-menu__close" aria-label="Zamknij menu" onclick="toggleMobileMenu()">&times;</button>
-    <a href="#/sklep" onclick="toggleMobileMenu()">Sklep</a>
-    <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('o-nas')?.scrollIntoView({behavior:'smooth'}),100)">O nas</a>
-    <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('live')?.scrollIntoView({behavior:'smooth'}),100)">Transmisje live</a>
-    <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('kontakt')?.scrollIntoView({behavior:'smooth'}),100)">Kontakt</a>
+    <div class="mobile-menu__nav" id="mobileMenuNav"></div>
   </div>
 
   <!-- ====== PAGES ====== -->
@@ -2827,6 +2901,54 @@
           <a href="#/sklep" class="mega-menu__footer-link">Wszystkie kategorie &rarr;</a>
         </div>
       </div>`;
+    })();
+
+    // ========== MOBILE MENU ==========
+    (function buildMobileMenu() {
+      const nav = document.getElementById('mobileMenuNav');
+      if (!nav) return;
+
+      const topShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+      const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
+
+      function chip(href, label) {
+        return `<a href="${href}" class="mobile-menu__cat-chip" onclick="toggleMobileMenu()">${label}</a>`;
+      }
+
+      nav.innerHTML = `
+        <div class="mobile-menu__accordion" id="mobileAccordion">
+          <button class="mobile-menu__accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+            Sklep
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-menu__accordion-body">
+            <div class="mobile-menu__cat-group">
+              <div class="mobile-menu__cat-label">Kształty</div>
+              <div class="mobile-menu__cat-list">
+                ${topShapes.map(c => chip(`#/kategoria/${c.slug}`, c.name)).join('')}
+              </div>
+            </div>
+            <div class="mobile-menu__cat-group">
+              <div class="mobile-menu__cat-label">Wzory</div>
+              <div class="mobile-menu__cat-list">
+                ${topDecos.map(c => {
+                  const fn = D.decoNames[c.slug] || '';
+                  return chip(`#/kategoria/${c.slug}`, fn || c.name);
+                }).join('')}
+              </div>
+            </div>
+            <div class="mobile-menu__cat-group">
+              <div class="mobile-menu__cat-label">Kolekcje</div>
+              <div class="mobile-menu__cat-list">
+                ${virtualCategories.map(vc => chip(`#/kolekcja/${vc.slug}`, vc.name)).join('')}
+              </div>
+            </div>
+            <a href="#/sklep" class="mobile-menu__cat-chip" onclick="toggleMobileMenu()" style="margin-top:8px;border-color:var(--cobalt);color:var(--cobalt);font-weight:600;">Wszystkie kategorie</a>
+          </div>
+        </div>
+        <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('o-nas')?.scrollIntoView({behavior:'smooth'}),100)">O nas</a>
+        <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('live')?.scrollIntoView({behavior:'smooth'}),100)">Transmisje live</a>
+        <a href="#/" onclick="toggleMobileMenu();navigateTo('/');setTimeout(()=>document.getElementById('kontakt')?.scrollIntoView({behavior:'smooth'}),100)">Kontakt</a>`;
     })();
 
     // ========== SCROLL OBSERVER ==========

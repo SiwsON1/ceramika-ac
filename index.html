@@ -357,9 +357,12 @@
     .mega-menu__footer-link:hover { color: var(--terracotta); }
 
     /* Override nav hero styles inside mega menu */
-    .nav.nav--hero .nav__links .mega-menu__link { color: var(--cobalt); }
-    .nav.nav--hero .nav__links .mega-menu__link:hover { color: var(--terracotta); }
-    .nav__links .mega-menu__link::after { content: none; }
+    .nav.nav--hero .nav__links .mega-menu__link,
+    .nav.nav--hero .nav__links .mega-menu__footer-link { color: var(--cobalt); }
+    .nav.nav--hero .nav__links .mega-menu__link:hover,
+    .nav.nav--hero .nav__links .mega-menu__footer-link:hover { color: var(--terracotta); }
+    .nav__links .mega-menu__link::after,
+    .nav__links .mega-menu__footer-link::after { content: none; }
 
     @media (max-width: 767px) {
       .mega-menu { display: none; }

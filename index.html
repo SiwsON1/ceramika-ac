@@ -241,6 +241,126 @@
       transition: all 0.3s ease;
     }
 
+    /* ---- Mega Menu ---- */
+    .nav__item--mega {
+      position: static;
+    }
+    .mega-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(250, 246, 240, 0.98);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(27, 42, 74, 0.08);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1), transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.35s;
+      z-index: 101;
+      padding: 36px 0 40px;
+    }
+    .nav__item--mega:hover .mega-menu,
+    .mega-menu:hover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    /* Keep mega open while transitioning from link to dropdown */
+    .nav__item--mega:hover > a::after { width: 100%; }
+
+    .mega-menu__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    @media (max-width: 1023px) {
+      .mega-menu__inner { padding: 0 40px; gap: 28px; }
+    }
+
+    .mega-menu__col-title {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mega-menu__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mega-menu__link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--cobalt);
+      transition: background 0.2s, color 0.2s;
+    }
+    .mega-menu__link:hover {
+      background: rgba(27, 42, 74, 0.04);
+      color: var(--terracotta);
+    }
+
+    .mega-menu__thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+    .mega-menu__link:hover .mega-menu__thumb {
+      border-color: var(--terracotta);
+    }
+
+    .mega-menu__count {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 400;
+      margin-left: auto;
+    }
+
+    .mega-menu__footer {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .mega-menu__footer-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cobalt);
+      transition: color 0.2s;
+    }
+    .mega-menu__footer-link:hover { color: var(--terracotta); }
+
+    @media (max-width: 767px) {
+      .mega-menu { display: none; }
+    }
+
     /* Mobile menu */
     .mobile-menu {
       position: fixed;
@@ -2165,7 +2285,10 @@
              class="nav__logo">
       </a>
       <ul class="nav__links">
-        <li><a href="#/sklep">Sklep</a></li>
+        <li class="nav__item--mega">
+          <a href="#/sklep">Sklep</a>
+          <div class="mega-menu" id="megaMenu"></div>
+        </li>
         <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('o-nas')?.scrollIntoView({behavior:'smooth'}),100)">O nas</a></li>
         <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('live')?.scrollIntoView({behavior:'smooth'}),100)">Transmisje live</a></li>
         <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('kontakt')?.scrollIntoView({behavior:'smooth'}),100)">Kontakt</a></li>
@@ -2653,6 +2776,51 @@
       nav.classList.toggle('nav--hero', isHome);
     }
     function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+
+    // ========== MEGA MENU ==========
+    (function buildMegaMenu() {
+      const mm = document.getElementById('megaMenu');
+      if (!mm) return;
+
+      const topShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
+      const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 6);
+
+      function megaLink(href, img, label, count) {
+        return `<li><a href="${href}" class="mega-menu__link">
+          ${img ? `<img src="${img}" alt="${label}" class="mega-menu__thumb" loading="lazy">` : ''}
+          <span>${label}</span>
+          <span class="mega-menu__count">${count}</span>
+        </a></li>`;
+      }
+
+      mm.innerHTML = `<div class="mega-menu__inner">
+        <div>
+          <div class="mega-menu__col-title">Kształty</div>
+          <ul class="mega-menu__list">
+            ${topShapes.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, c.name, c.count + ' szt.')).join('')}
+          </ul>
+        </div>
+        <div>
+          <div class="mega-menu__col-title">Popularne wzory</div>
+          <ul class="mega-menu__list">
+            ${topDecos.map(c => {
+              const fn = D.decoNames[c.slug] || '';
+              const label = fn ? `${c.name} ${fn}` : c.name;
+              return megaLink(`#/kategoria/${c.slug}`, c.image, label, c.count + ' szt.');
+            }).join('')}
+          </ul>
+        </div>
+        <div>
+          <div class="mega-menu__col-title">Kolekcje</div>
+          <ul class="mega-menu__list">
+            ${virtualCategories.map(vc => megaLink(`#/kolekcja/${vc.slug}`, vc.image, vc.name, vc.count + ' szt.')).join('')}
+          </ul>
+        </div>
+        <div class="mega-menu__footer">
+          <a href="#/sklep" class="mega-menu__footer-link">Wszystkie kategorie &rarr;</a>
+        </div>
+      </div>`;
+    })();
 
     // ========== SCROLL OBSERVER ==========
     function initScrollObserver() {

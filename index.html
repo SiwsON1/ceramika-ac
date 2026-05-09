@@ -334,6 +334,7 @@
     }
 
     .mega-menu__col-title {
+      display: block;
       font-family: var(--font-body);
       font-size: 11px;
       font-weight: 600;
@@ -343,7 +344,9 @@
       margin-bottom: 20px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
     }
+    a.mega-menu__col-title:hover { color: var(--cobalt); }
 
     .mega-menu__list {
       list-style: none;
@@ -501,13 +504,16 @@
       padding: 0 0 16px;
     }
     .mobile-menu__cat-label {
+      display: block;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--terracotta);
       padding: 8px 0;
+      transition: color 0.2s;
     }
+    a.mobile-menu__cat-label:hover { color: var(--cobalt); }
     .mobile-menu__cat-list {
       display: flex;
       flex-wrap: wrap;
@@ -3024,13 +3030,13 @@
 
       mm.innerHTML = `<div class="mega-menu__inner">
         <div>
-          <div class="mega-menu__col-title">Kształty</div>
+          <a href="#/sklep" class="mega-menu__col-title">Kształty</a>
           <ul class="mega-menu__list">
             ${topShapes.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, c.name, c.count + ' szt.')).join('')}
           </ul>
         </div>
         <div>
-          <div class="mega-menu__col-title">Popularne wzory</div>
+          <a href="#/sklep" class="mega-menu__col-title">Popularne wzory</a>
           <ul class="mega-menu__list">
             ${topDecos.map(c => {
               const fn = D.decoNames[c.slug] || '';
@@ -3040,7 +3046,7 @@
           </ul>
         </div>
         <div>
-          <div class="mega-menu__col-title">Kolekcje</div>
+          <a href="#/sklep" class="mega-menu__col-title">Kolekcje</a>
           <ul class="mega-menu__list">
             ${virtualCategories.map(vc => megaLink(`#/kolekcja/${vc.slug}`, vc.image, vc.name, vc.count + ' szt.')).join('')}
           </ul>
@@ -3126,13 +3132,13 @@
           </button>
           <div class="mobile-menu__accordion-body">
             <div class="mobile-menu__cat-group">
-              <div class="mobile-menu__cat-label">Kształty</div>
+              <a href="#/sklep" class="mobile-menu__cat-label" onclick="toggleMobileMenu()">Kształty</a>
               <div class="mobile-menu__cat-list">
                 ${topShapes.map(c => chip(`#/kategoria/${c.slug}`, c.name)).join('')}
               </div>
             </div>
             <div class="mobile-menu__cat-group">
-              <div class="mobile-menu__cat-label">Wzory</div>
+              <a href="#/sklep" class="mobile-menu__cat-label" onclick="toggleMobileMenu()">Wzory</a>
               <div class="mobile-menu__cat-list">
                 ${topDecos.map(c => {
                   const fn = D.decoNames[c.slug] || '';
@@ -3141,7 +3147,7 @@
               </div>
             </div>
             <div class="mobile-menu__cat-group">
-              <div class="mobile-menu__cat-label">Kolekcje</div>
+              <a href="#/sklep" class="mobile-menu__cat-label" onclick="toggleMobileMenu()">Kolekcje</a>
               <div class="mobile-menu__cat-list">
                 ${virtualCategories.map(vc => chip(`#/kolekcja/${vc.slug}`, vc.name)).join('')}
               </div>

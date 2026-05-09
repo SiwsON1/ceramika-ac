@@ -125,8 +125,8 @@
 
     /* ---- Animations ---- */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -151,12 +151,29 @@
 
     .animate-on-scroll {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+      transform: translateY(12px);
+      filter: blur(4px);
+      transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out), filter 0.6s var(--ease-out);
     }
     .animate-on-scroll.visible {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* ---- Reduced Motion (Accessibility) ---- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
     }
 
     /* ============================================
@@ -168,7 +185,7 @@
       left: 0;
       right: 0;
       z-index: 100;
-      transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
       padding: 20px 0;
     }
     /* On homepage hero: white text */
@@ -251,6 +268,7 @@
     }
     @media (min-width: 768px) { .nav__cta { display: inline-block; } }
     .nav__cta:hover { background: var(--cobalt-light); transform: translateY(-1px); }
+    .nav__cta:active { transform: scale(0.97); }
 
     .nav__hamburger {
       display: flex;
@@ -263,7 +281,7 @@
       width: 24px;
       height: 2px;
       background: var(--cobalt);
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
     }
 
     /* ---- Mega Menu ---- */
@@ -273,38 +291,46 @@
     .mega-menu {
       position: absolute;
       top: 100%;
-      left: 0;
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px);
+      width: 720px;
+      max-width: calc(100vw - 40px);
       background: var(--cream);
-      backdrop-filter: none;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 20px 60px rgba(27, 42, 74, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 16px 48px rgba(27, 42, 74, 0.12);
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-8px);
-      transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1), transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.35s;
+      transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.3s;
       z-index: 101;
-      padding: 36px 0 40px;
+      padding: 28px 0 20px;
+      margin-top: 8px;
     }
     .nav__item--mega:hover .mega-menu,
     .mega-menu:hover {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
-    /* Keep mega open while transitioning from link to dropdown */
-    .nav__item--mega:hover > a::after { width: 100%; }
+    /* Force-close after clicking a link (overrides hover) */
+    .nav__item--mega.mega-closing .mega-menu,
+    .nav__item--mega.mega-closing:hover .mega-menu {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      transform: translateX(-50%) translateY(-8px) !important;
+      pointer-events: none;
+    }
 
     .mega-menu__inner {
-      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 60px;
+      padding: 0 32px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 40px;
+      gap: 28px;
     }
     @media (max-width: 1023px) {
-      .mega-menu__inner { padding: 0 40px; gap: 28px; }
+      .mega-menu { width: 600px; }
+      .mega-menu__inner { padding: 0 24px; gap: 20px; }
     }
 
     .mega-menu__col-title {
@@ -606,8 +632,9 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      transition: all 0.3s var(--ease-out);
+      transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.3s var(--ease-out);
     }
+    .btn-primary:active { transform: scale(0.97); }
     .btn-primary:hover {
       background: var(--gold-light);
       color: var(--cobalt);
@@ -628,8 +655,9 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      transition: all 0.3s var(--ease-out);
+      transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out), transform 0.2s var(--ease-out);
     }
+    .btn-outline:active { transform: scale(0.97); }
     .btn-outline:hover {
       border-color: var(--white);
       background: rgba(255,255,255,0.08);
@@ -815,7 +843,7 @@
       justify-content: center;
       opacity: 0;
       transform: translateY(8px);
-      transition: all 0.4s var(--ease-out);
+      transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
     }
     .cat-card__arrow svg { width: 16px; height: 16px; color: var(--white); }
     .cat-card:hover .cat-card__arrow { opacity: 1; transform: translateY(0); }
@@ -1150,7 +1178,7 @@
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.5px;
-      transition: all 0.3s var(--ease-out);
+      transition: background 0.3s var(--ease-out), transform 0.2s var(--ease-out);
     }
     .live__link--fb {
       background: #1877F2;
@@ -1333,8 +1361,9 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
-      transition: all 0.3s var(--ease-out);
+      transition: background 0.3s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.3s var(--ease-out);
     }
+    .btn-dark:active { transform: scale(0.97); }
     .btn-dark:hover {
       background: var(--cobalt-light);
       transform: translateY(-2px);
@@ -1440,7 +1469,7 @@
       justify-content: center;
       border: 1px solid rgba(255,255,255,0.15);
       color: rgba(255,255,255,0.7);
-      transition: all 0.3s ease;
+      transition: border-color 0.3s ease, color 0.3s ease;
     }
     .footer__social a:hover {
       border-color: var(--gold-light);
@@ -1499,8 +1528,8 @@
     .page.active { display: block; animation: pageIn 0.35s var(--ease-out) forwards; }
     #page-home.active { animation: none; opacity: 1; }
     @keyframes pageIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+      to { opacity: 1; transform: translateY(0); filter: blur(0); }
     }
 
     /* ============================================
@@ -1564,7 +1593,7 @@
       background: var(--white);
       border: 1px solid var(--border);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
     .cat-filter:hover, .cat-filter.active {
       color: var(--white);
@@ -1606,37 +1635,42 @@
       .prod-page__main { gap: 80px; }
     }
 
-    .prod-gallery {}
+    /* ---- Gallery v2 ---- */
+    .prod-gallery { position: relative; }
     .prod-gallery__main {
       width: 100%;
       aspect-ratio: 1;
-      background: var(--white);
-      border: 1px solid var(--border);
+      background: var(--cream-dark);
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(27,42,74,0.08);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px;
       margin-bottom: 12px;
       overflow: hidden;
+      position: relative;
+      cursor: zoom-in;
     }
     .prod-gallery__main img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      mix-blend-mode: multiply;
       transition: transform 0.5s var(--ease-out);
-      cursor: zoom-in;
     }
-    .prod-gallery__main img:hover { transform: scale(1.15); }
+    .prod-gallery__main:hover img { transform: scale(1.08); }
 
     .prod-gallery__thumbs {
       display: flex;
       gap: 8px;
     }
     .prod-gallery__thumb {
-      width: 72px;
-      height: 72px;
-      background: var(--white);
+      width: 80px;
+      height: 80px;
+      background: var(--cream-dark);
       border: 2px solid var(--border);
+      border-radius: 8px;
       padding: 6px;
       cursor: pointer;
       transition: border-color 0.2s;
@@ -1644,101 +1678,313 @@
       align-items: center;
       justify-content: center;
     }
+    @media (min-width: 768px) {
+      .prod-gallery__thumb { width: 100px; height: 100px; padding: 8px; }
+    }
     .prod-gallery__thumb:hover,
     .prod-gallery__thumb.active {
-      border-color: var(--cobalt);
+      border-color: var(--terracotta);
     }
     .prod-gallery__thumb img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      mix-blend-mode: multiply;
     }
 
+    /* ---- Lightbox ---- */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(27,42,74,0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-out);
+      cursor: zoom-out;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .lightbox__close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      color: var(--white);
+      font-size: 32px;
+      cursor: pointer;
+      z-index: 201;
+    }
+
+    /* ---- Product Info v2 ---- */
     .prod-info {}
+    .prod-info__deco {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--terracotta);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
     .prod-info__name {
       font-family: var(--font-display);
-      font-size: clamp(24px, 3.5vw, 36px);
+      font-size: clamp(26px, 3.5vw, 38px);
       font-weight: 500;
       color: var(--cobalt);
       line-height: 1.2;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .prod-info__deco {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--terracotta);
-      letter-spacing: 1px;
-      text-transform: uppercase;
+    .prod-info__ornament {
+      width: 40px;
+      height: 2px;
+      background: var(--terracotta);
       margin-bottom: 20px;
     }
+
+    /* Price v2 - terracotta accent */
     .prod-info__price {
       font-family: var(--font-display);
-      font-size: 32px;
+      font-size: 36px;
       font-weight: 600;
-      color: var(--cobalt);
-      margin-bottom: 24px;
+      color: var(--terracotta);
+      margin-bottom: 8px;
     }
     .prod-info__price small {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 400;
       color: var(--text-muted);
     }
 
+    /* Artisan quote */
+    .prod-info__artisan-quote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding-left: 16px;
+      border-left: 2px solid var(--terracotta);
+      line-height: 1.6;
+    }
+
+    /* Deco swatches */
+    .prod-info__swatches {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .prod-info__swatches-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+    .deco-swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream-dark);
+    }
+    .deco-swatch:hover { border-color: var(--terracotta); transform: scale(1.1); }
+    .deco-swatch.active { border-color: var(--terracotta); box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--terracotta); }
+    .deco-swatch img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      mix-blend-mode: multiply;
+    }
+    .deco-swatch__code {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--cobalt);
+      text-align: center;
+    }
+
+    /* Badges v2 - warm artisan style */
     .prod-info__badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 28px;
+      gap: 8px;
+      margin-bottom: 24px;
     }
     .prod-badge {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      background: var(--white);
-      border: 1px solid var(--border);
+      gap: 8px;
+      padding: 10px 16px;
+      background: #FDF5ED;
+      border-radius: 24px;
       font-size: 12px;
       font-weight: 500;
-      color: var(--text-muted);
+      color: var(--cobalt);
     }
-    .prod-badge svg { width: 16px; height: 16px; color: var(--cobalt-medium); }
+    .prod-badge svg { width: 18px; height: 18px; color: var(--terracotta); flex-shrink: 0; }
 
+    /* Description - structured */
     .prod-info__desc {
       font-size: 15px;
       line-height: 1.8;
       color: var(--text-muted);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
     .prod-info__desc p { margin-bottom: 12px; }
 
-    .prod-info__buy {
+    /* Spec table */
+    .prod-spec {
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .prod-spec__row {
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 32px;
-    }
-    .prod-info__buy .btn-dark {
-      flex: 1;
-      justify-content: center;
-      min-width: 200px;
-    }
-
-    .prod-info__meta {
-      padding-top: 24px;
-      border-top: 1px solid var(--border);
+      align-items: center;
+      padding: 10px 16px;
       font-size: 13px;
-      color: var(--text-muted);
-      line-height: 2;
+      border-bottom: 1px solid var(--border);
     }
-    .prod-info__meta strong {
-      color: var(--text);
+    .prod-spec__row:last-child { border-bottom: none; }
+    .prod-spec__row:nth-child(even) { background: rgba(27,42,74,0.02); }
+    .prod-spec__icon {
+      width: 20px;
+      height: 20px;
+      color: var(--terracotta);
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .prod-spec__label {
       font-weight: 600;
+      color: var(--text);
+      min-width: 120px;
+    }
+    .prod-spec__value {
+      color: var(--text-muted);
+    }
+    .prod-spec__value a { color: var(--cobalt); text-decoration: underline; text-decoration-color: var(--border); }
+    .prod-spec__value a:hover { text-decoration-color: var(--terracotta); }
+
+    /* CTA block v2 */
+    .prod-cta-block {
+      background: var(--cobalt);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .prod-cta-block .btn-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 32px;
+      background: var(--white);
+      color: var(--cobalt);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 6px;
+      transition: background 0.3s var(--ease-out), transform 0.2s;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 480px) {
+      .prod-cta-block .btn-cta { font-size: 11px; padding: 14px 16px; gap: 8px; letter-spacing: 0.5px; }
+    }
+    .prod-cta-block .btn-cta:hover { background: var(--gold-light); }
+    .prod-cta-block .btn-cta:active { transform: scale(0.97); }
+    .prod-cta-block .btn-cta svg { width: 16px; height: 16px; }
+    .prod-cta-block__trust {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .prod-cta-block__trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+    }
+    .prod-cta-block__trust-item svg { width: 14px; height: 14px; color: var(--gold-light); }
+
+    /* Sticky mobile CTA */
+    .prod-sticky-cta {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      .prod-sticky-cta {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 90;
+        background: var(--cobalt);
+        padding: 12px 16px;
+        box-shadow: 0 -4px 20px rgba(27,42,74,0.2);
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .prod-sticky-cta__price {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .prod-sticky-cta__price small {
+        font-size: 12px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.6);
+      }
+      .prod-sticky-cta .btn-cta {
+        padding: 12px 24px;
+        background: var(--white);
+        color: var(--cobalt);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border-radius: 6px;
+        white-space: nowrap;
+      }
+      .prod-sticky-cta.visible {
+        display: flex;
+      }
     }
 
-    /* Related products */
+    /* ---- Related products v2 ---- */
     .related {
       padding: 60px 0 80px;
       background: var(--white);
+      position: relative;
+    }
+    .related::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 2px;
+      background: var(--terracotta);
     }
     .related__header {
       margin-bottom: 40px;
@@ -1755,7 +2001,7 @@
       gap: 16px;
     }
     @media (min-width: 640px) {
-      .related__grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      .related__grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
     }
 
     /* All categories listing */
@@ -1785,7 +2031,7 @@
       border: 1px solid var(--border);
       padding: 28px 20px 24px;
       text-align: center;
-      transition: all 0.4s var(--ease-out);
+      transition: border-color 0.4s var(--ease-out), transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -2062,7 +2308,7 @@
       border: 1px solid var(--border);
       background: var(--white);
       color: var(--text-light);
-      transition: all 0.2s;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
     .cat-page__view-btn.active,
     .cat-page__view-btn:hover {
@@ -2509,68 +2755,7 @@
         </div>
         <p style="max-width:380px;color:var(--text-muted);font-size:15px;line-height:1.7;">Ponad 100 produktów w kilkunastu wzorach. Każdy element ręcznie zdobiony w naszej pracowni.</p>
       </div>
-      <div class="categories__grid">
-        <a href="#/kategoria/kubki" class="cat-card cat-card--featured animate-on-scroll">
-          <img src="wp-content/uploads/2025/01/8-768x772-1-768x768.jpg"
-               alt="Kubki ceramika bolesławiecka - ręcznie malowane"
-               class="cat-card__img">
-          <div class="cat-card__overlay">
-            <h3 class="cat-card__name">Kubki</h3>
-            <span class="cat-card__count">Bestseller kolekcji</span>
-          </div>
-          <div class="cat-card__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-        </a>
-        <a href="#/kategoria/filizanki" class="cat-card animate-on-scroll" style="animation-delay:0.1s">
-          <img src="wp-content/uploads/2024/09/DSC_0143-1024x602.jpg"
-               alt="Filiżanki ceramika bolesławiecka - zestaw ze wzorem ważka"
-               class="cat-card__img">
-          <div class="cat-card__overlay">
-            <h3 class="cat-card__name">Filiżanki</h3>
-            <span class="cat-card__count">Zestawy do herbaty i kawy</span>
-          </div>
-          <div class="cat-card__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-        </a>
-        <a href="#/kategoria/czajniki-dzbanki" class="cat-card animate-on-scroll" style="animation-delay:0.15s">
-          <img src="wp-content/uploads/2025/09/Group-494-1-768x768.png"
-               alt="Czajnik ceramika bolesławiecka - klasyczny wzór groszki"
-               class="cat-card__img cat-card__img--contain">
-          <div class="cat-card__overlay">
-            <h3 class="cat-card__name">Czajniki</h3>
-            <span class="cat-card__count">Klasyczne i nowoczesne</span>
-          </div>
-          <div class="cat-card__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-        </a>
-        <a href="#/kategoria/talerze" class="cat-card animate-on-scroll" style="animation-delay:0.2s">
-          <img src="wp-content/uploads/2025/10/6527298c8fd34043bd04e9570a3f77aa-1024x1024-1-768x768.jpg"
-               alt="Talerzyki i salaterki ceramika bolesławiecka"
-               class="cat-card__img">
-          <div class="cat-card__overlay">
-            <h3 class="cat-card__name">Talerze i salaterki</h3>
-            <span class="cat-card__count">Na co dzień i od święta</span>
-          </div>
-          <div class="cat-card__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-        </a>
-        <a href="#/kategoria/pozostale-ksztalty" class="cat-card animate-on-scroll" style="animation-delay:0.25s">
-          <img src="wp-content/uploads/2025/02/WhatsApp-Image-2026-04-27-at-19.41.10-1-768x768.png"
-               alt="Łyżeczki i akcesoria ceramika bolesławiecka"
-               class="cat-card__img cat-card__img--contain">
-          <div class="cat-card__overlay">
-            <h3 class="cat-card__name">Akcesoria</h3>
-            <span class="cat-card__count">Detale, które zachwycają</span>
-          </div>
-          <div class="cat-card__arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-          </div>
-        </a>
-      </div>
+      <div class="shop-cats-round" id="homeCatsRound"></div>
     </div>
   </section>
 
@@ -2623,62 +2808,15 @@
     </div>
   </section>
 
-  <!-- ====== PRODUCTS ====== -->
+  <!-- ====== BESTSELLERY ====== -->
   <section class="products">
     <div class="container">
       <div class="products__header animate-on-scroll">
-        <div class="section-ornament" style="justify-content:center;"><span class="section-label">Nowości</span></div>
-        <h2 class="section-title section-title--md">Najnowsze produkty</h2>
-        <p>Świeżo z naszej pracowni - ręcznie malowane ceramiczne nowości</p>
+        <div class="section-ornament" style="justify-content:center;"><span class="section-label">Bestsellery</span></div>
+        <h2 class="section-title section-title--md">Najchętniej kupowane</h2>
+        <p>Kubki, cukiernice, półmiski i pojemniki - produkty które klienci wybierają najczęściej</p>
       </div>
-      <div class="products__grid">
-        <div class="product-card animate-on-scroll">
-          <span class="product-card__tag">Nowość</span>
-          <div class="product-card__img-wrap">
-            <img src="wp-content/uploads/2025/09/Group-494-1-500x500.png"
-                 alt="Czajnik ceramika bolesławiecka - wzór groszki"
-                 class="product-card__img">
-          </div>
-          <div class="product-card__info">
-            <div class="product-card__name">Czajnik - Groszki</div>
-            <div class="product-card__price">od 189 zł</div>
-          </div>
-        </div>
-        <div class="product-card animate-on-scroll" style="animation-delay:0.1s">
-          <div class="product-card__img-wrap">
-            <img src="wp-content/uploads/2026/02/WhatsApp-Image-2026-04-27-at-20.29.44-500x500.jpeg"
-                 alt="Kubek ceramika bolesławiecka - wzór Owoce Leśne K73"
-                 class="product-card__img">
-          </div>
-          <div class="product-card__info">
-            <div class="product-card__name">Kubek - Leśne owoce</div>
-            <div class="product-card__price">od 59 zł</div>
-          </div>
-        </div>
-        <div class="product-card animate-on-scroll" style="animation-delay:0.15s">
-          <div class="product-card__img-wrap">
-            <img src="wp-content/uploads/2025/01/473594730_960893046137568_2189299446602193143_n-300x300-1-500x500.jpg"
-                 alt="Forma do pieczenia ceramika bolesławiecka"
-                 class="product-card__img">
-          </div>
-          <div class="product-card__info">
-            <div class="product-card__name">Forma - Groszki</div>
-            <div class="product-card__price">od 129 zł</div>
-          </div>
-        </div>
-        <div class="product-card animate-on-scroll" style="animation-delay:0.2s">
-          <span class="product-card__tag">Hit</span>
-          <div class="product-card__img-wrap">
-            <img src="wp-content/uploads/2025/01/8-768x772-1-500x500.jpg"
-                 alt="Kubek ceramika bolesławiecka - wzór kwiatowy"
-                 class="product-card__img">
-          </div>
-          <div class="product-card__info">
-            <div class="product-card__name">Kubek - Jagodowy</div>
-            <div class="product-card__price">od 49 zł</div>
-          </div>
-        </div>
-      </div>
+      <div class="products__grid" id="homeBestsellers"></div>
     </div>
   </section>
 
@@ -2801,6 +2939,9 @@
   <div id="page-product" class="page"></div>
   </main>
 
+  <!-- Sticky CTA - outside main to avoid transform containment -->
+  <div id="sticky-cta-portal"></div>
+
   <!-- ====== FOOTER ====== -->
   <footer class="footer">
     <div class="container">
@@ -2827,42 +2968,21 @@
     // Decoration categories (parent=44)
     const decoCats = D.categories.filter(c => c.parent === 44);
 
-    // Virtual (scenario-based) categories - cross-listing existing products
+    // Virtual categories (competitor-inspired: CERKADA + boleslawieckaceramika.pl)
     const virtualCategories = [
       {
-        slug: 'kawa-i-herbata',
-        name: 'Kawa i herbata',
-        description: 'Kubki, filiżanki, czajniki i cukiernice - wszystko do kawy i herbaty',
-        shapeSlugs: ['kubki', 'filizanki', 'czajniki-dzbanki', 'cukiernice-mleczniki', 'zestawy-komplety'],
-        imageSlug: 'filizanki',
-      },
-      {
-        slug: 'obiad-i-serwowanie',
-        name: 'Obiad i serwowanie',
-        description: 'Talerze, miski, salaterki i półmiski na co dzień i od święta',
-        shapeSlugs: ['talerze', 'miski-salaterki', 'polmiski', 'naczynia-do-zapiekania'],
-        imageSlug: 'talerze',
-      },
-      {
-        slug: 'dekoracja-domu',
-        name: 'Dekoracja domu',
-        description: 'Donice, wazony, figurki i podstawki - ceramiczny akcent w domu',
-        shapeSlugs: ['donice-wazony', 'figurki', 'podstawki'],
-        imageSlug: 'figurki',
-      },
-      {
-        slug: 'przechowywanie-i-kuchnia',
-        name: 'Przechowywanie i kuchnia',
-        description: 'Pojemniki, maselnice i jajeczniki - praktyczna ceramika na co dzień',
-        shapeSlugs: ['pojemniki', 'maselnice-jajeczniki'],
-        imageSlug: 'pojemniki',
+        slug: 'komplety',
+        name: 'Komplety i zestawy',
+        description: 'Gotowe zestawy ceramiki bolesławieckiej - do kawy, obiadu i na prezent',
+        shapeSlugs: ['zestawy-komplety', 'filizanki', 'talerze', 'kubki'],
+        imageSlug: 'zestawy-komplety',
       },
       {
         slug: 'prezenty',
         name: 'Prezenty',
-        description: 'Zestawy i figurki - idealny prezent z ceramiki bolesławieckiej',
-        shapeSlugs: ['zestawy-komplety', 'figurki'],
-        imageSlug: 'zestawy-komplety',
+        description: 'Idealny prezent z ceramiki bolesławieckiej - zestawy, figurki i unikalne kształty',
+        shapeSlugs: ['zestawy-komplety', 'figurki', 'cukiernice-mleczniki'],
+        imageSlug: 'figurki',
       },
     ];
 
@@ -2929,6 +3049,61 @@
           <a href="#/sklep" class="mega-menu__footer-link">Wszystkie kategorie &rarr;</a>
         </div>
       </div>`;
+
+      // Close mega menu when any link inside is clicked
+      const megaParent = mm.closest('.nav__item--mega');
+      mm.addEventListener('click', (e) => {
+        if (e.target.closest('a')) {
+          megaParent.classList.add('mega-closing');
+          setTimeout(() => megaParent.classList.remove('mega-closing'), 600);
+        }
+      });
+    })();
+
+    // ========== HOME PAGE CATEGORIES (dynamic round cards) ==========
+    (function buildHomeCats() {
+      const el = document.getElementById('homeCatsRound');
+      if (!el) return;
+      const allShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count);
+      el.innerHTML = allShapes.map(c => shopCatCardRound(c, '', 'lg')).join('');
+      // Stagger animation on category cards
+      el.querySelectorAll('.shop-cat-round').forEach((card, i) => {
+        card.classList.add('animate-on-scroll');
+        card.dataset.delay = String(i * 60);
+      });
+    })();
+
+    // ========== HOME PAGE BESTSELLERS (from client brief: kubki, cukiernice, polmiski, pojemniki, filizanki) ==========
+    (function buildHomeBestsellers() {
+      const el = document.getElementById('homeBestsellers');
+      if (!el) return;
+      const bestCats = ['kubki', 'cukiernice-mleczniki', 'polmiski', 'pojemniki', 'filizanki'];
+      const picked = [];
+      bestCats.forEach(slug => {
+        const catProducts = D.products.filter(p => p.cats.some(c => c.slug === slug));
+        // Pick 2 from each category, diversify decorations
+        const sorted = catProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        const used = new Set();
+        for (const p of sorted) {
+          if (picked.length >= 8) return;
+          const deco = p.cats.find(c => decoCats.some(dc => dc.id === c.id));
+          const decoSlug = deco ? deco.slug : 'none';
+          if (!used.has(decoSlug) && picked.length < 8) {
+            picked.push(p);
+            used.add(decoSlug);
+            if (used.size >= 2) return;
+          }
+        }
+        if (!picked.find(p => p.cats.some(c => c.slug === slug)) && sorted.length > 0) {
+          picked.push(sorted[0]);
+        }
+      });
+      el.innerHTML = picked.slice(0, 8).map(p => productCardHTML(p)).join('');
+      // Stagger animation on product cards
+      el.querySelectorAll('.product-card').forEach((card, i) => {
+        card.classList.add('animate-on-scroll');
+        card.dataset.delay = String(i * 80);
+      });
     })();
 
     // ========== MOBILE MENU ==========
@@ -2981,8 +3156,19 @@
 
     // ========== SCROLL OBSERVER ==========
     function initScrollObserver() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            if (prefersReduced) {
+              e.target.classList.add('visible');
+            } else {
+              const delay = parseInt(e.target.dataset.delay || '0', 10);
+              setTimeout(() => e.target.classList.add('visible'), delay);
+            }
+            obs.unobserve(e.target);
+          }
+        });
       }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.animate-on-scroll').forEach(el => obs.observe(el));
     }
@@ -2993,7 +3179,7 @@
       return name.replace(/- Ceramika Bol[^)]*$/i, '').replace(/\(Produkt[^)]*\)/gi, '').trim();
     }
     function getDecoLabel(product) {
-      const deco = product.cats.find(c => decoCats.some(dc => dc.id === c.id));
+      const deco = getDecoCat(product);
       if (!deco) return '';
       const friendlyName = D.decoNames[deco.slug] || '';
       return friendlyName ? `Wzór: ${deco.name} ${friendlyName}` : `Wzór: ${deco.name}`;
@@ -3008,17 +3194,42 @@
     }
 
     // ========== INTERNAL LINKING HELPERS ==========
-    function getDecoCat(product) {
-      return product.cats.find(c => decoCats.some(dc => dc.id === c.id));
+
+    // Parse deco code from product name: "Cukiernica 300ml Nd. T1" -> "t1"
+    function parseDecoFromName(product) {
+      const m = product.name.match(/Nd[.\s]+(\w+)/i);
+      return m ? m[1].toLowerCase() : null;
     }
 
-    function getCrossSellByDeco(product, limit = 4) {
-      const deco = getDecoCat(product);
-      if (!deco) return [];
+    function getDecoCat(product) {
+      // First: try real WooCommerce category
+      const real = product.cats.find(c => decoCats.some(dc => dc.id === c.id));
+      if (real) return real;
+      // Fallback: parse from product name and create synthetic entry
+      const parsed = parseDecoFromName(product);
+      if (!parsed) return null;
+      // Check if a real category exists with this slug
+      const realCat = decoCats.find(dc => dc.slug === parsed);
+      if (realCat) return { id: realCat.id, slug: realCat.slug, name: realCat.name };
+      // Create synthetic deco (no category page exists)
+      return { id: -1, slug: parsed, name: parsed.toUpperCase(), _synthetic: true };
+    }
+
+    // Get deco slug for any product (for matching purposes)
+    function getDecoSlug(product) {
+      const cat = product.cats.find(c => decoCats.some(dc => dc.id === c.id));
+      if (cat) return cat.slug;
+      const parsed = parseDecoFromName(product);
+      return parsed || null;
+    }
+
+    function getCrossSellByDeco(product, limit = 6) {
+      const decoSlug = getDecoSlug(product);
+      if (!decoSlug) return [];
       const shapeCat = getShapeCat(product);
       return D.products.filter(p =>
         p.id !== product.id &&
-        p.cats.some(c => c.id === deco.id) &&
+        getDecoSlug(p) === decoSlug &&
         (!shapeCat || !p.cats.some(c => c.id === shapeCat.id))
       ).slice(0, limit);
     }
@@ -3615,24 +3826,55 @@
 
       // Related: same shape category, different product
       const related = shapeCat
-        ? D.products.filter(rp => rp.id !== p.id && rp.cats.some(c => c.id === shapeCat.id)).slice(0, 4)
-        : D.products.filter(rp => rp.id !== p.id).slice(0, 4);
+        ? D.products.filter(rp => rp.id !== p.id && rp.cats.some(c => c.id === shapeCat.id)).slice(0, 6)
+        : D.products.filter(rp => rp.id !== p.id).slice(0, 6);
 
       // Cross-sell: same decoration, different shape
-      const crossSell = getCrossSellByDeco(p, 4);
+      const crossSell = getCrossSellByDeco(p, 6);
       const decoFriendly = decoCat ? (D.decoNames[decoCat.slug] || '') : '';
       const decoTitle = decoCat ? (decoFriendly ? `${decoCat.name} ${decoFriendly}` : decoCat.name) : '';
 
       // Decoration link for meta
       const decoLinkHTML = decoCat
-        ? `<strong>Dekoracja:</strong> <a href="#/kategoria/${decoCat.slug}">${decoTitle}</a><br>`
+        ? (decoCat._synthetic
+          ? `<strong>Dekoracja:</strong> ${decoTitle}<br>`
+          : `<strong>Dekoracja:</strong> <a href="#/kategoria/${decoCat.slug}">${decoTitle}</a><br>`)
         : '';
 
+      // Deco swatches - other decorations in the same shape
+      const decoSwatches = [];
+      if (shapeCat) {
+        const sameShape = D.products.filter(sp => sp.id !== p.id && sp.cats.some(c => c.id === shapeCat.id));
+        const seenDecos = new Set();
+        if (decoCat) seenDecos.add(decoCat.slug);
+        sameShape.forEach(sp => {
+          const spDeco = getDecoCat(sp);
+          if (spDeco && !seenDecos.has(spDeco.slug)) {
+            seenDecos.add(spDeco.slug);
+            const friendlyN = D.decoNames[spDeco.slug] || '';
+            decoSwatches.push({
+              slug: sp.slug,
+              decoSlug: spDeco.slug,
+              decoName: spDeco.name,
+              image: sp.images[0] || '',
+              friendly: friendlyN
+            });
+          }
+        });
+      }
+
+      // Spec data parsing
+      const sizeMatch = desc.match(/Rozmiar[:\s]*([^\n.]+)/i);
+      const capacityMatch = p.name.match(/(\d+(?:[.,]\d+)?)\s*(ml|l|L)/i);
+      const decoNumMatch = desc.match(/Numer dekoracji[:\s]*(\w+)/i) || (decoCat ? [null, decoCat.name] : null);
+
       // Schema.org Product JSON-LD
+      const cleanDesc = stripHTML(p.desc).substring(0, 500);
       const schemaJSON = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Product",
         "name": name,
+        "description": cleanDesc,
         "image": images,
         "brand": { "@type": "Brand", "name": "Ceramika AC" },
         "offers": {
@@ -3673,50 +3915,97 @@
             </div>
             <div class="prod-page__main">
               <div class="prod-gallery">
-                <div class="prod-gallery__main" id="mainImg">
-                  <img src="${mainImg}" alt="${name}" id="mainImgEl">
+                <div class="prod-gallery__main" id="mainImg" onclick="openLightbox()">
+                  <img src="${mainImg}" alt="${name}${decoTitle ? ' - wzor ' + decoTitle : ''} - ceramika boleslawiecka" id="mainImgEl">
                 </div>
                 ${images.length > 1 ? `
                 <div class="prod-gallery__thumbs">
                   ${images.map((img, i) => `
                     <div class="prod-gallery__thumb ${i === 0 ? 'active' : ''}" onclick="switchImage('${img}', this)">
-                      <img src="${img}" alt="${name} - zdjęcie ${i + 1}">
+                      <img src="${img}" alt="${name} - zdjecie ${i + 1}">
                     </div>`).join('')}
                 </div>` : ''}
               </div>
               <div class="prod-info">
                 ${decoLabel ? `<div class="prod-info__deco">${decoLabel}</div>` : ''}
                 <h1 class="prod-info__name">${name}</h1>
-                <div class="prod-info__price">${p.price} <small>zł</small></div>
+                <div class="prod-info__ornament"></div>
+                <div class="prod-info__price">${p.price} <small>zl</small></div>
+                <div class="prod-info__artisan-quote">Kazde naczynie jest unikatowe - recznie zdobione za pomoca stempli i pedzli przez polskich rzemieslnikow w Boleslawcu.</div>
+                ${decoSwatches.length > 0 ? `
+                <div class="prod-info__swatches">
+                  <span class="prod-info__swatches-label">Inne wzory:</span>
+                  ${decoSwatches.slice(0, 8).map(sw => `
+                    <a href="#/produkt/${sw.slug}" class="deco-swatch" title="${sw.decoName}${sw.friendly ? ' ' + sw.friendly : ''}">
+                      ${sw.image ? `<img src="${sw.image}" alt="${sw.decoName}">` : `<span class="deco-swatch__code">${sw.decoSlug.toUpperCase()}</span>`}
+                    </a>`).join('')}
+                </div>` : ''}
                 <div class="prod-info__badges">
                   <div class="prod-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    Ręcznie malowane
+                    Recznie malowane
                   </div>
                   <div class="prod-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    Oryginał z Bolesławca
+                    Oryginal z Boleslawca
                   </div>
                   <div class="prod-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                    Zmywarka, piekarnik, mikrofalówka
+                    Zmywarka, piekarnik, mikrofalowka
                   </div>
                 </div>
-                <div class="prod-info__desc">
-                  ${desc ? `<p>${desc}</p>` : ''}
-                  <p>Oryginalna ceramika bolesławiecka ręcznie zdobiona za pomocą stempli i pędzli. Wypalana w temperaturze ok. 1226°C - bezpieczna, wytrzymała, nadaje się do zmywarki, piekarnika, mikrofalówki i zamrażarki. Każde naczynie posiada stempel fabryki i podpis zdobiarza.</p>
+                <div class="prod-spec">
+                  ${shapeCat ? `<div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    <span class="prod-spec__label">Ksztalt</span>
+                    <span class="prod-spec__value"><a href="#/kategoria/${shapeCat.slug}">${shapeCat.name}</a></span>
+                  </div>` : ''}
+                  ${decoNumMatch ? `<div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <span class="prod-spec__label">Dekoracja</span>
+                    <span class="prod-spec__value">${decoCat && !decoCat._synthetic ? `<a href="#/kategoria/${decoCat.slug}">${decoTitle}</a>` : decoTitle || decoNumMatch[1]}</span>
+                  </div>` : ''}
+                  ${sizeMatch ? `<div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3z"/><path d="M9 3v18M3 9h18"/></svg>
+                    <span class="prod-spec__label">Rozmiar</span>
+                    <span class="prod-spec__value">${sizeMatch[1].trim()}</span>
+                  </div>` : ''}
+                  ${capacityMatch ? `<div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+                    <span class="prod-spec__label">Pojemnosc</span>
+                    <span class="prod-spec__value">${capacityMatch[1]} ${capacityMatch[2]}</span>
+                  </div>` : ''}
+                  <div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    <span class="prod-spec__label">Material</span>
+                    <span class="prod-spec__value">Ceramika boleslawiecka</span>
+                  </div>
+                  <div class="prod-spec__row">
+                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span class="prod-spec__label">Produkcja</span>
+                    <span class="prod-spec__value">Reczna, Boleslawiec, Polska</span>
+                  </div>
                 </div>
-                <div class="prod-info__buy">
-                  <a href="${p.link || '#'}" class="btn-dark" target="_blank" rel="nofollow noopener">
-                    Kup w sklepie
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                ${desc ? `<div class="prod-info__desc"><p>${desc}</p></div>` : ''}
+                <div class="prod-cta-block">
+                  <a href="${p.link || '#'}" class="btn-cta" target="_blank" rel="nofollow noopener">
+                    Kup w sklepie ceramikaac.com
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                   </a>
-                </div>
-                <div class="prod-info__meta">
-                  ${shapeCat ? `<strong>Kategoria:</strong> <a href="#/kategoria/${shapeCat.slug}">${shapeCat.name}</a><br>` : ''}
-                  ${decoLinkHTML}
-                  <strong>Materiał:</strong> Ceramika bolesławiecka<br>
-                  <strong>Produkcja:</strong> Ręczna, Bolesławiec, Polska
+                  <div class="prod-cta-block__trust">
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      Bezpieczne zakupy
+                    </div>
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                      Starannie zapakowane
+                    </div>
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      Certyfikat autentycznosci
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3726,7 +4015,7 @@
         <div class="related">
           <div class="container">
             <div class="related__header">
-              <div class="section-ornament"><span class="section-label">Może Ci się spodobać</span></div>
+              <div class="section-ornament"><span class="section-label">Moze Ci sie spodobac</span></div>
               <h2>Podobne produkty</h2>
             </div>
             <div class="related__grid">
@@ -3739,29 +4028,74 @@
           <div class="container">
             <div class="cross-sell__header">
               <div class="section-ornament"><span class="section-label">W tym samym wzorze</span></div>
-              <h2>Inne kształty w dekoracji ${decoTitle}</h2>
+              <h2>Inne ksztalty w dekoracji ${decoTitle}</h2>
             </div>
             <div class="cross-sell__grid">
               ${crossSell.map(rp => productCardHTML(rp)).join('')}
             </div>
-            <div class="cross-sell__cta">
+            ${decoCat && !decoCat._synthetic ? `<div class="cross-sell__cta">
               <a href="#/kategoria/${decoCat.slug}">
                 Zobacz wszystkie w wzorze ${decoTitle}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-            </div>
+            </div>` : ''}
           </div>
         </div>` : ''}
+        <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+          <span class="lightbox__close" onclick="closeLightbox()">&times;</span>
+          <img src="${mainImg}" alt="${name}" id="lightboxImg">
+        </div>
         <scr` + `ipt type="application/ld+json">${schemaJSON}</scr` + `ipt>
         <scr` + `ipt type="application/ld+json">${bcSchema}</scr` + `ipt>`;
       pages.product.innerHTML = html;
       initScrollObserver();
+
+      // Sticky CTA portal (outside .page to avoid transform containment breaking position:fixed)
+      const stickyPortal = document.getElementById('sticky-cta-portal');
+      if (stickyPortal) {
+        stickyPortal.innerHTML = `<div class="prod-sticky-cta">
+          <div class="prod-sticky-cta__price">${p.price} <small>zl</small></div>
+          <a href="${p.link || '#'}" class="btn-cta" target="_blank" rel="nofollow noopener">Kup w sklepie</a>
+        </div>`;
+      }
+
+      // Sticky CTA show/hide: show when user scrolls past gallery area
+      if (window.innerWidth < 768) {
+        const stickyEl = stickyPortal ? stickyPortal.querySelector('.prod-sticky-cta') : null;
+        const galleryEl = document.querySelector('.prod-gallery');
+        if (stickyEl && galleryEl) {
+          const stickyObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                stickyEl.classList.remove('visible');
+              } else {
+                stickyEl.classList.add('visible');
+              }
+            });
+          }, { threshold: 0.3 });
+          stickyObs.observe(galleryEl);
+        }
+      }
     }
 
     function switchImage(src, thumbEl) {
       document.getElementById('mainImgEl').src = src;
       document.querySelectorAll('.prod-gallery__thumb').forEach(t => t.classList.remove('active'));
       thumbEl.classList.add('active');
+    }
+
+    function openLightbox() {
+      const lb = document.getElementById('lightbox');
+      const mainSrc = document.getElementById('mainImgEl').src;
+      document.getElementById('lightboxImg').src = mainSrc;
+      if (lb) lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      if (lb) lb.classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     // ========== ROUTER ==========
@@ -3778,6 +4112,9 @@
 
       // Hide all pages
       Object.values(pages).forEach(p => p.classList.remove('active'));
+      // Clear sticky CTA portal when leaving product page
+      const stickyPortal = document.getElementById('sticky-cta-portal');
+      if (stickyPortal) stickyPortal.innerHTML = '';
 
       if (path === '/' || path === '') {
         pages.home.classList.add('active');

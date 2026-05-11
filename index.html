@@ -393,8 +393,7 @@
       top: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(-8px);
-      width: 1080px;
-      max-width: calc(100vw - 40px);
+      width: min(1280px, calc(100vw - 40px));
       background: var(--cream);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -423,15 +422,16 @@
 
     .mega-menu__inner {
       margin: 0 auto;
-      padding: 0 40px;
+      padding: 0 32px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr auto;
-      gap: 24px;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 20px;
     }
     .mega-menu__col--wide-header { grid-column: 1 / 3; }
-    @media (max-width: 1023px) {
-      .mega-menu { width: 820px; }
-      .mega-menu__inner { padding: 0 24px; gap: 16px; }
+    @media (max-width: 1279px) {
+      .mega-menu__inner { grid-template-columns: 1fr 1fr 1fr; padding: 0 24px; gap: 16px; }
+      .mega-menu__col--wide-header { grid-column: 1 / 2; }
+      .mega-menu__col--shapes-right { display: none; }
     }
 
     .mega-menu__col-title {
@@ -3829,21 +3829,32 @@
         </a></li>`;
       }
 
+      // Short names for mega menu (SEO names stay on category pages)
+      const megaShortNames = {
+        'kubki': 'Kubki', 'filizanki': 'Filiżanki', 'czajniki-dzbanki': 'Czajniki i dzbanki',
+        'cukiernice-mleczniki': 'Cukiernice i mleczniki', 'talerze': 'Talerze',
+        'maselnice-jajeczniki': 'Maselnice i sosjerki', 'miski-salaterki': 'Miski i salaterki',
+        'naczynia-do-zapiekania': 'Naczynia do zapiekania', 'pojemniki': 'Pojemniki',
+        'polmiski': 'Półmiski', 'figurki': 'Figurki', 'zestawy-komplety': 'Zestawy i komplety',
+        'mydelniczki-ceramiczne': 'Mydelniczki', 'akcesoria-kuchenne-ceramiczne': 'Akcesoria kuchenne',
+      };
+
       const half = Math.ceil(topShapes.length / 2);
       const shapesLeft = topShapes.slice(0, half);
       const shapesRight = topShapes.slice(half);
+      const megaCollections = virtualCategories.slice(0, 5);
 
       mm.innerHTML = `<div class="mega-menu__inner">
         <div>
           <a href="#/sklep" class="mega-menu__col-title mega-menu__col--wide-header">Kształty</a>
           <ul class="mega-menu__list">
-            ${shapesLeft.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, c.name, c.count + ' szt.')).join('')}
+            ${shapesLeft.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, megaShortNames[c.slug] || c.name, c.count + ' szt.')).join('')}
           </ul>
         </div>
-        <div>
+        <div class="mega-menu__col--shapes-right">
           <a href="#/sklep" class="mega-menu__col-title" style="visibility:hidden">-</a>
           <ul class="mega-menu__list">
-            ${shapesRight.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, c.name, c.count + ' szt.')).join('')}
+            ${shapesRight.map(c => megaLink(`#/kategoria/${c.slug}`, c.image, megaShortNames[c.slug] || c.name, c.count + ' szt.')).join('')}
           </ul>
         </div>
         <div>
@@ -3859,7 +3870,10 @@
         <div>
           <a href="#/sklep" class="mega-menu__col-title">Kolekcje</a>
           <ul class="mega-menu__list">
-            ${virtualCategories.map(vc => megaLink(`#/kolekcja/${vc.slug}`, vc.image, vc.name, vc.count + ' szt.')).join('')}
+            ${megaCollections.map(vc => {
+              const img = vc.imageSlug ? (D.categories.find(x => x.slug === vc.imageSlug) || {}).image : null;
+              return megaLink(`#/kolekcja/${vc.slug}`, img, vc.name, '');
+            }).join('')}
           </ul>
         </div>
         <div class="mega-menu__footer">

@@ -343,6 +343,20 @@
     @media (min-width: 768px) { .nav__cta { display: inline-block; } }
     .nav__cta:hover { background: var(--cobalt-light); transform: translateY(-1px); }
     .nav__cta:active { transform: scale(0.97); }
+    .cart-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 9px;
+      margin-left: 4px;
+    }
 
     .nav__hamburger {
       display: flex;
@@ -2940,66 +2954,95 @@
       color: var(--text-muted);
     }
 
-    /* ---- KATALOG ---- */
-    .catalog-intro {
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 48px;
-    }
-    .catalog-intro p {
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
-    .catalog-section {
-      margin-bottom: 56px;
-    }
-    .catalog-section__title {
-      font-family: var(--font-display);
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-      font-weight: 500;
-      color: var(--cobalt);
-      margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .catalog-grid {
+    /* ---- KATALOG (flipbook) ---- */
+    .catalog-flipbooks {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 48px;
     }
     @media (min-width: 768px) {
-      .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px; }
+      .catalog-flipbooks { grid-template-columns: 1fr 1fr; gap: 40px; }
     }
-    .catalog-card {
-      text-align: center;
-      transition: transform 0.25s var(--ease-out);
-    }
-    .catalog-card:hover { transform: translateY(-4px); }
-    .catalog-card:active { transform: scale(0.97); }
-    .catalog-card__img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin: 0 auto 12px;
-      overflow: hidden;
+    .catalog-flipbook-card {
       background: var(--white);
-      border: 2px solid var(--border);
-      transition: border-color 0.2s;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
     }
-    .catalog-card:hover .catalog-card__img {
-      border-color: var(--terracotta-light);
+    .catalog-flipbook-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(27,42,74,0.08);
     }
-    .catalog-card__img img {
+    .catalog-flipbook-card__cover {
+      position: relative;
+      aspect-ratio: 16/10;
+      overflow: hidden;
+    }
+    .catalog-flipbook-card__cover img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      mix-blend-mode: multiply;
     }
-    .catalog-card__name {
-      font-size: 13px;
-      font-weight: 500;
+    .catalog-flipbook-card__badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+    .catalog-flipbook-card__info {
+      padding: 24px;
+    }
+    .catalog-flipbook-card__info h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
       color: var(--cobalt);
+      margin-bottom: 8px;
+    }
+    .catalog-flipbook-card__info p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .catalog-flipbook-card__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .catalog-flipbook-card__btn:hover { background: var(--cobalt-light); }
+    .catalog-cta {
+      text-align: center;
+      padding: 32px;
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .catalog-cta p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .catalog-cta__link {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--terracotta);
       line-height: 1.3;
     }
     .catalog-card__count {
@@ -3131,9 +3174,10 @@
         <li><a href="#/o-nas">O nas</a></li>
         <li><a href="#/kontakt">Kontakt</a></li>
       </ul>
-      <a href="https://ceramikaac.com/koszyk/" target="_blank" rel="noopener" class="nav__cta">
+      <a href="#/sklep" class="nav__cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-        Sklep online
+        Koszyk
+        <span class="cart-badge" style="display:none">0</span>
       </a>
       <button class="nav__hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
@@ -3171,7 +3215,7 @@
           Przeglądaj kolekcję
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#live" class="btn-outline">
+        <a href="https://www.facebook.com/ceramikaAC" target="_blank" rel="noopener" class="btn-outline">
           Oglądaj transmisje
           <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14" fill="none" stroke="currentColor" stroke-width="2"/></svg>
         </a>
@@ -4412,14 +4456,7 @@
       const html = `
         <div class="prod-page">
           <div class="container">
-            ${shapeCat ? `
-            <div class="prod-page__cat-bar">
-              <a href="#/kategoria/${shapeCat.slug}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                Wróć do: ${shapeCat.name}
-              </a>
-            </div>` : ''}
-            <div class="breadcrumbs" ${shapeCat ? 'style="padding-top:12px;"' : ''}>
+            <div class="breadcrumbs">
               <a href="#/">Strona główna</a> <span>/</span>
               <a href="#/sklep">Sklep</a> <span>/</span>
               ${shapeCat ? `<a href="#/kategoria/${shapeCat.slug}">${shapeCat.name}</a> <span>/</span>` : ''}
@@ -4500,10 +4537,10 @@
                 </div>
                 ${desc ? `<div class="prod-info__desc"><p>${desc}</p></div>` : ''}
                 <div class="prod-cta-block">
-                  <a href="${p.link || '#'}" class="btn-cta" target="_blank" rel="nofollow noopener">
-                    Kup w sklepie ceramikaac.com
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  </a>
+                  <button class="btn-cta" onclick="addToCart('${p.slug}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Dodaj do koszyka
+                  </button>
                   <div class="prod-cta-block__trust">
                     <div class="prod-cta-block__trust-item">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -4567,7 +4604,7 @@
       if (stickyPortal) {
         stickyPortal.innerHTML = `<div class="prod-sticky-cta">
           <div class="prod-sticky-cta__price">${p.price} <small>zl</small></div>
-          <a href="${p.link || '#'}" class="btn-cta" target="_blank" rel="nofollow noopener">Kup w sklepie</a>
+          <button class="btn-cta" onclick="addToCart('${p.slug}')">Dodaj do koszyka</button>
         </div>`;
       }
 
@@ -4608,6 +4645,31 @@
       const lb = document.getElementById('lightbox');
       if (lb) lb.classList.remove('open');
       document.body.style.overflow = '';
+    }
+
+    // ========== CART ==========
+    let cart = [];
+    function addToCart(slug) {
+      const p = D.products.find(x => x.slug === slug);
+      if (!p) return;
+      const existing = cart.find(x => x.slug === slug);
+      if (existing) { existing.qty++; } else { cart.push({ slug, qty: 1 }); }
+      updateCartBadge();
+      // Feedback
+      const btn = document.querySelector('.prod-cta-block .btn-cta');
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><polyline points="20 6 9 17 4 12"/></svg> Dodano!';
+        btn.style.background = '#2d7a4f';
+        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 1500);
+      }
+    }
+    function updateCartBadge() {
+      const total = cart.reduce((s, i) => s + i.qty, 0);
+      document.querySelectorAll('.cart-badge').forEach(b => {
+        b.textContent = total;
+        b.style.display = total > 0 ? 'flex' : 'none';
+      });
     }
 
     // ========== STATIC PAGES ==========
@@ -4743,64 +4805,50 @@
     }
 
     function renderCatalog() {
-      const allShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count);
-      const allDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count);
-
-      function getCatImage(cat) {
-        const prod = D.products.find(p => p.cats.some(c => c.id === cat.id) && p.images.length > 0);
-        return prod ? prod.images[0] : '';
-      }
-
-      function catalogCard(href, name, count, imgSrc) {
-        return `<a href="${href}" class="catalog-card">
-          <div class="catalog-card__img">
-            ${imgSrc ? `<img src="${imgSrc}" alt="${name}" loading="lazy">` : ''}
-          </div>
-          <div class="catalog-card__name">${name}</div>
-          <div class="catalog-card__count">${count} ${count === 1 ? 'produkt' : (count < 5 ? 'produkty' : 'produktów')}</div>
-        </a>`;
-      }
-
       pages.catalog.innerHTML = `
         <div class="static-page">
           <div class="container">
             <div class="static-page__hero">
               <span class="section-label">Katalog</span>
-              <h1>Pełny katalog ceramiki</h1>
-              <p>Przeglądaj wszystkie kategorie kształtów i wzorów dekoracyjnych naszej ceramiki bolesławieckiej.</p>
+              <h1>Katalog ceramiki ręcznie robionej</h1>
+              <p>Przeglądaj nasz katalog produktowy w formie interaktywnego flipbooka. Dostępny w wersji polskiej i angielskiej.</p>
             </div>
 
-            <div class="catalog-section">
-              <h2 class="catalog-section__title">Kolekcje</h2>
-              <div class="catalog-grid">
-                ${virtualCategories.map(vc => {
-                  const imgCat = shapeCats.find(c => c.slug === vc.imageSlug);
-                  const img = imgCat ? getCatImage(imgCat) : '';
-                  const total = vc.shapeSlugs.reduce((acc, s) => {
-                    const cat = shapeCats.find(c => c.slug === s);
-                    return acc + (cat ? cat.count : 0);
-                  }, 0);
-                  return catalogCard(`#/kolekcja/${vc.slug}`, vc.name, total, img);
-                }).join('')}
+            <div class="catalog-flipbooks">
+              <div class="catalog-flipbook-card">
+                <div class="catalog-flipbook-card__cover">
+                  <img src="wp-content/uploads/2024/09/DSC_0085-768x513.jpg" alt="Katalog ceramiki bolesławieckiej - wersja polska">
+                  <div class="catalog-flipbook-card__badge">PL</div>
+                </div>
+                <div class="catalog-flipbook-card__info">
+                  <h3>Katalog PL</h3>
+                  <p>Pełny katalog produktów w języku polskim - 27 stron z opisami kształtów, wzorów dekoracyjnych i dostępnych produktów.</p>
+                  <a href="https://ceramikaac.com/katalog/" target="_blank" rel="noopener" class="catalog-flipbook-card__btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    Przeglądaj katalog
+                  </a>
+                </div>
+              </div>
+
+              <div class="catalog-flipbook-card">
+                <div class="catalog-flipbook-card__cover">
+                  <img src="wp-content/uploads/2024/09/DSC_0143-768x452.jpg" alt="Ceramics catalogue - English version">
+                  <div class="catalog-flipbook-card__badge">EN</div>
+                </div>
+                <div class="catalog-flipbook-card__info">
+                  <h3>Catalogue EN</h3>
+                  <p>Full product catalogue in English - 26 pages with descriptions of shapes, decorative patterns and available products.</p>
+                  <a href="https://ceramikaac.com/katalog/" target="_blank" rel="noopener" class="catalog-flipbook-card__btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    Browse catalogue
+                  </a>
+                </div>
               </div>
             </div>
 
-            <div class="catalog-section">
-              <h2 class="catalog-section__title">Kształty (${allShapes.length})</h2>
-              <div class="catalog-grid">
-                ${allShapes.map(c => catalogCard(`#/kategoria/${c.slug}`, c.name, c.count, getCatImage(c))).join('')}
-              </div>
-            </div>
-
-            <div class="catalog-section">
-              <h2 class="catalog-section__title">Wzory dekoracyjne (${allDecos.length})</h2>
-              <div class="catalog-grid">
-                ${allDecos.map(c => {
-                  const fn = D.decoNames[c.slug] || '';
-                  const label = fn ? `${c.name} ${fn}` : c.name;
-                  return catalogCard(`#/kategoria/${c.slug}`, label, c.count, getCatImage(c));
-                }).join('')}
-              </div>
+            <div class="catalog-cta">
+              <p>Katalogi dostępne są również na stronie producenta jako interaktywne flipbooki 3D z możliwością powiększania, drukowania i pobierania.</p>
+              <a href="#/sklep" class="catalog-cta__link">Przejdź do sklepu online &rarr;</a>
             </div>
           </div>
         </div>`;

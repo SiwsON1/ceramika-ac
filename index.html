@@ -2745,9 +2745,12 @@
 
     .static-page__hero {
       text-align: center;
-      padding: 48px 0 40px;
+      padding: 32px 0 28px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 48px;
+      margin-bottom: 32px;
+    }
+    @media (min-width: 768px) {
+      .static-page__hero { padding: 48px 0 40px; margin-bottom: 48px; }
     }
     .static-page__hero .section-label { margin-bottom: 16px; display: block; }
     .static-page__hero h1 {
@@ -2824,12 +2827,18 @@
     .about-value {
       text-align: center;
       padding: 24px 16px;
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
     }
     .about-value__icon {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       margin: 0 auto 16px;
       color: var(--terracotta);
+      background: rgba(196,101,74,0.08);
+      border-radius: 50%;
+      padding: 12px;
     }
     .about-value__title {
       font-family: var(--font-display);
@@ -4486,14 +4495,6 @@
                 <h1 class="prod-info__name">${name}</h1>
                 <div class="prod-info__ornament"></div>
                 <div class="prod-info__price">${p.price} <small>zl</small></div>
-                ${decoSwatches.length > 0 ? `
-                <div class="prod-info__swatches">
-                  <span class="prod-info__swatches-label">Inne wzory:</span>
-                  ${decoSwatches.slice(0, 8).map(sw => `
-                    <a href="#/produkt/${sw.slug}" class="deco-swatch" title="${sw.decoName}${sw.friendly ? ' ' + sw.friendly : ''}">
-                      ${sw.image ? `<img src="${sw.image}" alt="${sw.decoName}">` : `<span class="deco-swatch__code">${sw.decoSlug.toUpperCase()}</span>`}
-                    </a>`).join('')}
-                </div>` : ''}
                 <div class="prod-cta-block">
                   <button class="btn-cta" onclick="addToCart('${p.slug}')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
@@ -4514,6 +4515,14 @@
                     </div>
                   </div>
                 </div>
+                ${decoSwatches.length > 0 ? `
+                <div class="prod-info__swatches">
+                  <span class="prod-info__swatches-label">Inne wzory:</span>
+                  ${decoSwatches.slice(0, 8).map(sw => `
+                    <a href="#/produkt/${sw.slug}" class="deco-swatch" title="${sw.decoName}${sw.friendly ? ' ' + sw.friendly : ''}">
+                      ${sw.image ? `<img src="${sw.image}" alt="${sw.decoName}">` : `<span class="deco-swatch__code">${sw.decoSlug.toUpperCase()}</span>`}
+                    </a>`).join('')}
+                </div>` : ''}
                 <div class="prod-info__badges">
                   <div class="prod-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>

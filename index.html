@@ -4485,7 +4485,6 @@
                 <h1 class="prod-info__name">${name}</h1>
                 <div class="prod-info__ornament"></div>
                 <div class="prod-info__price">${p.price} <small>zl</small></div>
-                <div class="prod-info__artisan-quote">Kazde naczynie jest unikatowe - recznie zdobione za pomoca stempli i pedzli przez polskich rzemieslnikow w Boleslawcu.</div>
                 ${decoSwatches.length > 0 ? `
                 <div class="prod-info__swatches">
                   <span class="prod-info__swatches-label">Inne wzory:</span>
@@ -4494,6 +4493,26 @@
                       ${sw.image ? `<img src="${sw.image}" alt="${sw.decoName}">` : `<span class="deco-swatch__code">${sw.decoSlug.toUpperCase()}</span>`}
                     </a>`).join('')}
                 </div>` : ''}
+                <div class="prod-cta-block">
+                  <button class="btn-cta" onclick="addToCart('${p.slug}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    Dodaj do koszyka
+                  </button>
+                  <div class="prod-cta-block__trust">
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                      Bezpieczne zakupy
+                    </div>
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                      Starannie zapakowane
+                    </div>
+                    <div class="prod-cta-block__trust-item">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                      Certyfikat autentycznosci
+                    </div>
+                  </div>
+                </div>
                 <div class="prod-info__badges">
                   <div class="prod-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -4519,11 +4538,6 @@
                     <span class="prod-spec__label">Dekoracja</span>
                     <span class="prod-spec__value">${decoCat && !decoCat._synthetic ? `<a href="#/kategoria/${decoCat.slug}">${decoTitle}</a>` : decoTitle || decoNumMatch[1]}</span>
                   </div>` : ''}
-                  ${sizeMatch ? `<div class="prod-spec__row">
-                    <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3z"/><path d="M9 3v18M3 9h18"/></svg>
-                    <span class="prod-spec__label">Rozmiar</span>
-                    <span class="prod-spec__value">${sizeMatch[1].trim()}</span>
-                  </div>` : ''}
                   ${capacityMatch ? `<div class="prod-spec__row">
                     <svg class="prod-spec__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
                     <span class="prod-spec__label">Pojemnosc</span>
@@ -4541,26 +4555,6 @@
                   </div>
                 </div>
                 ${desc ? `<div class="prod-info__desc"><p>${desc}</p></div>` : ''}
-                <div class="prod-cta-block">
-                  <button class="btn-cta" onclick="addToCart('${p.slug}')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                    Dodaj do koszyka
-                  </button>
-                  <div class="prod-cta-block__trust">
-                    <div class="prod-cta-block__trust-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                      Bezpieczne zakupy
-                    </div>
-                    <div class="prod-cta-block__trust-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                      Starannie zapakowane
-                    </div>
-                    <div class="prod-cta-block__trust-item">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                      Certyfikat autentycznosci
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

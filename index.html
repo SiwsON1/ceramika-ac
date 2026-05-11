@@ -1984,10 +1984,9 @@
 
     /* CTA block v2 */
     .prod-cta-block {
-      background: var(--cobalt);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
+      padding: 24px 0;
+      margin-bottom: 16px;
+      border-top: 1px solid var(--border);
     }
     .prod-cta-block .btn-cta {
       display: flex;
@@ -1995,23 +1994,26 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 16px 32px;
-      background: var(--white);
-      color: var(--cobalt);
-      font-size: 13px;
+      padding: 18px 32px;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      border-radius: 6px;
-      transition: background 0.3s var(--ease-out), transform 0.2s;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s var(--ease-out), transform 0.2s, box-shadow 0.3s;
       margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(196,101,74,0.25);
     }
     @media (max-width: 480px) {
-      .prod-cta-block .btn-cta { font-size: 11px; padding: 14px 16px; gap: 8px; letter-spacing: 0.5px; }
+      .prod-cta-block .btn-cta { font-size: 12px; padding: 16px 16px; gap: 8px; letter-spacing: 1px; }
     }
-    .prod-cta-block .btn-cta:hover { background: var(--gold-light); }
-    .prod-cta-block .btn-cta:active { transform: scale(0.97); }
-    .prod-cta-block .btn-cta svg { width: 16px; height: 16px; }
+    .prod-cta-block .btn-cta:hover { background: #b5573e; box-shadow: 0 6px 20px rgba(196,101,74,0.35); transform: translateY(-1px); }
+    .prod-cta-block .btn-cta:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(196,101,74,0.2); }
+    .prod-cta-block .btn-cta svg { width: 18px; height: 18px; }
     .prod-cta-block__trust {
       display: flex;
       justify-content: center;
@@ -2023,9 +2025,9 @@
       align-items: center;
       gap: 6px;
       font-size: 11px;
-      color: rgba(255,255,255,0.7);
+      color: var(--text-light);
     }
-    .prod-cta-block__trust-item svg { width: 14px; height: 14px; color: var(--gold-light); }
+    .prod-cta-block__trust-item svg { width: 14px; height: 14px; color: var(--terracotta-light); }
 
     /* Sticky mobile CTA */
     .prod-sticky-cta {
@@ -2039,9 +2041,10 @@
         left: 0;
         right: 0;
         z-index: 90;
-        background: var(--cobalt);
+        background: var(--white);
         padding: 12px 16px;
-        box-shadow: 0 -4px 20px rgba(27,42,74,0.2);
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        border-top: 1px solid var(--border);
         align-items: center;
         justify-content: space-between;
         gap: 12px;
@@ -2050,22 +2053,24 @@
         font-family: var(--font-display);
         font-size: 22px;
         font-weight: 600;
-        color: var(--white);
+        color: var(--cobalt);
       }
       .prod-sticky-cta__price small {
         font-size: 12px;
         font-weight: 400;
-        color: rgba(255,255,255,0.6);
+        color: var(--text-light);
       }
       .prod-sticky-cta .btn-cta {
         padding: 12px 24px;
-        background: var(--white);
-        color: var(--cobalt);
+        background: var(--terracotta);
+        color: var(--white);
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 1px;
         text-transform: uppercase;
         border-radius: 6px;
+        border: none;
+        cursor: pointer;
         white-space: nowrap;
       }
       .prod-sticky-cta.visible {

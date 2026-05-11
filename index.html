@@ -3664,12 +3664,76 @@
     const pages = { home: document.getElementById('page-home'), category: document.getElementById('page-category'), product: document.getElementById('page-product'), about: document.getElementById('page-about'), contact: document.getElementById('page-contact'), catalog: document.getElementById('page-catalog'), notfound: document.getElementById('page-404') };
     const D = window.STORE_DATA || { categories: [], products: [], decoNames: {} };
 
+    // SEO category name overrides (audyt: A1-A12)
+    const catNameOverrides = {
+      'kubki': 'Kubki ceramiczne',
+      'filizanki': 'Filizanki ceramiczne',
+      'czajniki-dzbanki': 'Czajniki i dzbanki ceramiczne',
+      'cukiernice-mleczniki': 'Cukiernice i mleczniki ceramiczne',
+      'talerze': 'Talerze ceramiczne boleslawieckie',
+      'maselnice-jajeczniki': 'Maselnice i sosjerki ceramiczne',
+      'miski-salaterki': 'Miski ceramiczne',
+      'naczynia-do-zapiekania': 'Naczynia do zapiekania ceramiczne',
+      'pojemniki': 'Pojemniki ceramiczne',
+      'polmiski': 'Polmiski ceramiczne',
+      'figurki': 'Figurki ceramiczne boleslawieckie',
+      'zestawy-komplety': 'Zestawy ceramiki boleslawiec',
+    };
+
+    // Apply name overrides
+    D.categories.forEach(c => {
+      if (catNameOverrides[c.slug]) c.name = catNameOverrides[c.slug];
+    });
+
+    // B1-B3, C1-C2: Dissolve Podstawki/Pozostale + create Mydelniczki/Akcesoria kuchenne
+    const newCats = [
+      { id: 9001, name: 'Mydelniczki ceramiczne', slug: 'mydelniczki-ceramiczne', parent: 43, count: 0, image: null },
+      { id: 9002, name: 'Akcesoria kuchenne ceramiczne', slug: 'akcesoria-kuchenne-ceramiczne', parent: 43, count: 0, image: null },
+    ];
+    // Product reassignment rules
+    const reassignRules = {
+      'mydelniczka': 'mydelniczki-ceramiczne',
+      'podstawka-pod-lyzke': 'akcesoria-kuchenne-ceramiczne',
+      'zaparzacz': 'akcesoria-kuchenne-ceramiczne',
+      'lyzeczka': 'akcesoria-kuchenne-ceramiczne',
+      'nalesnikarka': 'naczynia-do-zapiekania',
+      'sosjerka': 'maselnice-jajeczniki',
+      'krzyz': 'figurki',
+      'doniczka': 'figurki',
+    };
+    D.products.forEach(p => {
+      const slug = p.slug.toLowerCase();
+      for (const [keyword, targetCat] of Object.entries(reassignRules)) {
+        if (slug.includes(keyword)) {
+          // Remove old cats (podstawki, pozostale-ksztalty, donice-wazony)
+          p.cats = p.cats.filter(c => !['podstawki', 'pozostale-ksztalty', 'donice-wazony'].includes(c.slug));
+          // Add new cat if not already present
+          if (!p.cats.some(c => c.slug === targetCat)) {
+            const nc = newCats.find(x => x.slug === targetCat) || D.categories.find(x => x.slug === targetCat);
+            if (nc) p.cats.push({ id: nc.id, slug: nc.slug, name: nc.name });
+          }
+          break;
+        }
+      }
+    });
+    // Add new categories to D and remove dissolved ones
+    D.categories.push(...newCats);
+    // Update counts
+    newCats.forEach(nc => {
+      nc.count = D.products.filter(p => p.cats.some(c => c.slug === nc.slug)).length;
+      // Use first product image as category image
+      const firstP = D.products.find(p => p.cats.some(c => c.slug === nc.slug));
+      if (firstP && firstP.images[0]) nc.image = firstP.images[0];
+    });
+    // Remove dissolved categories from shape list
+    D.categories = D.categories.filter(c => !['podstawki', 'pozostale-ksztalty', 'donice-wazony'].includes(c.slug));
+
     // Shape categories (parent=43)
     const shapeCats = D.categories.filter(c => c.parent === 43);
     // Decoration categories (parent=44)
     const decoCats = D.categories.filter(c => c.parent === 44);
 
-    // Virtual categories (competitor-inspired: CERKADA + boleslawieckaceramika.pl)
+    // Virtual categories (audyt SEO: D1-D7 + kolekcje tematyczne)
     const virtualCategories = [
       {
         slug: 'komplety',
@@ -3680,10 +3744,47 @@
       },
       {
         slug: 'prezenty',
-        name: 'Prezenty',
-        description: 'Idealny prezent z ceramiki bolesławieckiej - zestawy, figurki i unikalne kształty',
-        shapeSlugs: ['zestawy-komplety', 'figurki', 'cukiernice-mleczniki'],
+        name: 'Prezenty ceramika bolesławiecka',
+        description: 'Idealny prezent z ceramiki bolesławieckiej - zestawy, figurki i unikalne kształty na każdą okazję',
+        shapeSlugs: ['zestawy-komplety', 'figurki', 'cukiernice-mleczniki', 'kubki'],
         imageSlug: 'figurki',
+      },
+      {
+        slug: 'kawa-i-herbata',
+        name: 'Kawa i herbata',
+        description: 'Ceramika bolesławiecka do kawy i herbaty - kubki, filiżanki, czajniki, dzbanki, cukiernice i mleczniki',
+        shapeSlugs: ['kubki', 'filizanki', 'czajniki-dzbanki', 'cukiernice-mleczniki', 'zestawy-komplety'],
+        imageSlug: 'kubki',
+      },
+      {
+        slug: 'serwowanie',
+        name: 'Serwowanie i nakrycie stołu',
+        description: 'Ceramika bolesławiecka do serwowania - półmiski, talerze, miski i salaterki na elegancki obiad',
+        shapeSlugs: ['polmiski', 'talerze', 'miski-salaterki'],
+        imageSlug: 'talerze',
+      },
+      {
+        slug: 'dekoracja-domu',
+        name: 'Dekoracja domu',
+        description: 'Ceramiczne dekoracje z Bolesławca - figurki, donice, wazony i inne elementy wystroju wnętrz',
+        shapeSlugs: ['figurki', 'donice-wazony'],
+        imageSlug: 'figurki',
+      },
+      {
+        slug: 'bestsellery',
+        name: 'Bestsellery',
+        description: 'Najpopularniejsze produkty ceramiki bolesławieckiej AC - najczęściej wybierane przez klientów',
+        shapeSlugs: ['kubki', 'cukiernice-mleczniki', 'filizanki', 'talerze'],
+        imageSlug: 'kubki',
+        _limit: 12,
+      },
+      {
+        slug: 'nowosci',
+        name: 'Nowości ceramika bolesławiecka',
+        description: 'Najnowsze produkty w naszej ofercie - świeże wzory i kształty ceramiki bolesławieckiej',
+        shapeSlugs: [], // uses _newest flag
+        _newest: true,
+        imageSlug: 'kubki',
       },
     ];
 
@@ -4323,7 +4424,15 @@
       const vc = virtualCategories.find(v => v.slug === slug);
       if (!vc) { renderShop(); return; }
 
-      const products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug)));
+      let products;
+      if (vc._newest) {
+        // Sort by ID descending (newest first) and take top 24
+        products = [...D.products].sort((a, b) => b.id - a.id).slice(0, 24);
+      } else if (vc._limit) {
+        products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug))).slice(0, vc._limit);
+      } else {
+        products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug)));
+      }
       const title = vc.name;
 
       // Shape sub-filters (which shape categories are represented)

@@ -177,17 +177,91 @@
     }
 
     /* ============================================
-       NAVIGATION
+       TOP BAR (above nav)
        ============================================ */
-    .nav {
+    .top-bar {
+      background: var(--cobalt);
+      color: rgba(255,255,255,0.8);
+      font-size: 12px;
+      padding: 6px 0;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
+      z-index: 101;
+      transition: transform 0.3s var(--ease-out);
+    }
+    .top-bar.hidden { transform: translateY(-100%); }
+    .top-bar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .top-bar__left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-bar__social {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .top-bar__social a {
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+      display: flex;
+    }
+    .top-bar__social a:hover { color: var(--white); }
+    .top-bar__social svg { width: 14px; height: 14px; }
+    .top-bar__sep {
+      width: 1px;
+      height: 12px;
+      background: rgba(255,255,255,0.2);
+    }
+    .top-bar__contact {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.7);
+    }
+    .top-bar__contact svg { width: 12px; height: 12px; }
+    @media (min-width: 768px) {
+      .top-bar__contact { display: flex; }
+    }
+    .top-bar__right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-bar__right a {
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+      font-size: 11px;
+    }
+    .top-bar__right a:hover { color: var(--white); }
+    .top-bar__cart {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: rgba(255,255,255,0.9);
+      font-weight: 500;
+    }
+    .top-bar__cart svg { width: 14px; height: 14px; }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 32px;
+      left: 0;
+      right: 0;
       z-index: 100;
-      transition: background 0.4s ease, box-shadow 0.4s ease;
+      transition: background 0.4s ease, box-shadow 0.4s ease, top 0.3s var(--ease-out);
       padding: 20px 0;
     }
+    .nav.scrolled { top: 0; }
     /* On homepage hero: white text */
     .nav.nav--hero .nav__links a { color: var(--white); }
     .nav.nav--hero .nav__links a:hover { color: var(--gold-light); }
@@ -293,7 +367,7 @@
       top: 100%;
       left: 50%;
       transform: translateX(-50%) translateY(-8px);
-      width: 720px;
+      width: 960px;
       max-width: calc(100vw - 40px);
       background: var(--cream);
       border: 1px solid var(--border);
@@ -303,7 +377,7 @@
       visibility: hidden;
       transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.3s;
       z-index: 101;
-      padding: 28px 0 20px;
+      padding: 32px 0 20px;
       margin-top: 8px;
     }
     .nav__item--mega:hover .mega-menu,
@@ -323,14 +397,14 @@
 
     .mega-menu__inner {
       margin: 0 auto;
-      padding: 0 32px;
+      padding: 0 40px;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 28px;
+      grid-template-columns: 1.2fr 1fr 0.7fr;
+      gap: 36px;
     }
     @media (max-width: 1023px) {
-      .mega-menu { width: 600px; }
-      .mega-menu__inner { padding: 0 24px; gap: 20px; }
+      .mega-menu { width: 720px; }
+      .mega-menu__inner { padding: 0 28px; gap: 24px; }
     }
 
     .mega-menu__col-title {
@@ -352,15 +426,15 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
 
     .mega-menu__link {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 7px 10px;
-      border-radius: 6px;
+      gap: 14px;
+      padding: 8px 12px;
+      border-radius: 8px;
       font-size: 14px;
       font-weight: 500;
       color: var(--cobalt);
@@ -372,8 +446,8 @@
     }
 
     .mega-menu__thumb {
-      width: 36px;
-      height: 36px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       object-fit: cover;
       mix-blend-mode: multiply;
@@ -2638,6 +2712,38 @@
 <body>
   <a href="#main-content" class="skip-link">Przeskocz do treści</a>
 
+  <!-- ====== TOP BAR ====== -->
+  <div class="top-bar" id="topBar">
+    <div class="container top-bar__inner">
+      <div class="top-bar__left">
+        <div class="top-bar__social">
+          <a href="https://www.facebook.com/ceramikaac" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/ceramikaac/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@ceramikaac" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78c.27 0 .54.04.8.1v-3.5a6.37 6.37 0 0 0-.8-.05A6.34 6.34 0 0 0 3.15 15a6.34 6.34 0 0 0 10.86 4.34A6.28 6.28 0 0 0 16 15.48V8.76a8.26 8.26 0 0 0 4.84 1.56v-3.45c-.42 0-.84-.06-1.25-.18z"/></svg>
+          </a>
+        </div>
+        <div class="top-bar__sep"></div>
+        <div class="top-bar__contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.81.36 1.6.68 2.34a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.74.32 1.53.55 2.34.68A2 2 0 0 1 22 16.92z"/></svg>
+          <span>+48 797 840 785</span>
+        </div>
+      </div>
+      <div class="top-bar__right">
+        <a href="https://ceramikaac.com/katalog/" target="_blank" rel="noopener">Katalog</a>
+        <a href="https://ceramikaac.com/moje-konto/" target="_blank" rel="noopener">Moje konto</a>
+        <a href="https://ceramikaac.com/koszyk/" target="_blank" rel="noopener" class="top-bar__cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Koszyk
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- ====== NAVIGATION ====== -->
   <nav class="nav" id="nav">
     <div class="container nav__inner">
@@ -2651,11 +2757,14 @@
           <a href="#/sklep">Sklep</a>
           <div class="mega-menu" id="megaMenu"></div>
         </li>
-        <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('o-nas')?.scrollIntoView({behavior:'smooth'}),100)">O nas</a></li>
+        <li><a href="https://ceramikaac.com/o-nas/" target="_blank" rel="noopener">O nas</a></li>
         <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('live')?.scrollIntoView({behavior:'smooth'}),100)">Transmisje live</a></li>
-        <li><a href="#/" onclick="navigateTo('/');setTimeout(()=>document.getElementById('kontakt')?.scrollIntoView({behavior:'smooth'}),100)">Kontakt</a></li>
+        <li><a href="https://ceramikaac.com/kontakt/" target="_blank" rel="noopener">Kontakt</a></li>
       </ul>
-      <a href="#/sklep" class="nav__cta">Sklep online</a>
+      <a href="https://ceramikaac.com/koszyk/" target="_blank" rel="noopener" class="nav__cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Sklep online
+      </a>
       <button class="nav__hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
       </button>
@@ -3004,7 +3113,12 @@
     });
 
     // ========== NAV ==========
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+    const topBar = document.getElementById('topBar');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY > 60;
+      nav.classList.toggle('scrolled', scrolled);
+      if (topBar) topBar.classList.toggle('hidden', scrolled);
+    });
     function updateNavHero() {
       const hash = window.location.hash || '#/';
       const isHome = hash === '#/' || hash === '' || hash === '#';

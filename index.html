@@ -4024,6 +4024,44 @@
       return tmp.textContent || '';
     }
 
+    function escapeHTML(text) {
+      const tmp = document.createElement('div');
+      tmp.textContent = text || '';
+      return tmp.innerHTML;
+    }
+
+    function trimIncompleteSentence(text) {
+      const clean = (text || '').replace(/\s+/g, ' ').trim();
+      if (!clean || /[.!?…)]$/.test(clean)) return clean;
+      const lastStop = Math.max(clean.lastIndexOf('.'), clean.lastIndexOf('!'), clean.lastIndexOf('?'), clean.lastIndexOf('…'));
+      return lastStop > 60 ? clean.slice(0, lastStop + 1).trim() : clean;
+    }
+
+    function sentenceCase(text) {
+      return text ? text.charAt(0).toLocaleUpperCase('pl-PL') + text.slice(1) : '';
+    }
+
+    function productDescriptionHTML(product) {
+      const holder = document.createElement('div');
+      holder.innerHTML = product.desc || '';
+      const parts = [];
+
+      holder.querySelectorAll('p, li').forEach(el => {
+        let text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!text) return;
+        if (/^(rozmiar|numer dekoracji)\s*:/i.test(text)) return;
+        text = sentenceCase(trimIncompleteSentence(text));
+        if (text && !parts.includes(text)) parts.push(text);
+      });
+
+      if (parts.length === 0) {
+        const fallback = trimIncompleteSentence(stripHTML(product.desc));
+        if (fallback) parts.push(fallback);
+      }
+
+      return parts.map(text => `<p>${escapeHTML(text)}</p>`).join('');
+    }
+
     // ========== INTERNAL LINKING HELPERS ==========
 
     // Parse deco code from product name: "Cukiernica 300ml Nd. T1" -> "t1"
@@ -4669,6 +4707,7 @@
       const shapeCat = getShapeCat(p);
       const decoCat = getDecoCat(p);
       const desc = stripHTML(p.desc);
+      const descHTML = productDescriptionHTML(p);
       const images = p.images.filter(img => img && !img.includes('671133614') && !img.includes('20.53.03'));
       const mainImg = images[0] || '';
 
@@ -4841,7 +4880,7 @@
                     <span class="prod-spec__value">Reczna, Boleslawiec, Polska</span>
                   </div>
                 </div>
-                ${desc ? `<div class="prod-info__desc"><p>${desc}</p></div>` : ''}
+                ${descHTML ? `<div class="prod-info__desc">${descHTML}</div>` : ''}
               </div>
             </div>
           </div>

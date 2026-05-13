@@ -1774,6 +1774,136 @@
       border-color: var(--cobalt);
     }
 
+    .cat-page__content {
+      display: grid;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      .cat-page__content {
+        grid-template-columns: 260px minmax(0, 1fr);
+      }
+    }
+    .cat-sidebar {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.45);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    @media (min-width: 1024px) {
+      .cat-sidebar {
+        position: sticky;
+        top: 96px;
+      }
+    }
+    .cat-sidebar__title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--cobalt);
+      margin-bottom: 18px;
+    }
+    .cat-filter-block {
+      padding: 18px 0;
+      border-top: 1px solid var(--border);
+    }
+    .cat-filter-block:first-of-type { padding-top: 0; border-top: none; }
+    .cat-filter-block__label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--cobalt);
+    }
+    .cat-filter-block__label svg {
+      width: 16px;
+      height: 16px;
+      color: var(--terracotta);
+      flex-shrink: 0;
+    }
+    .cat-price-filter {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .cat-price-filter label {
+      display: grid;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .cat-price-filter input {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--cobalt);
+      font: inherit;
+      font-size: 13px;
+    }
+    .cat-price-filter input:focus {
+      outline: none;
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(196,101,74,0.12);
+    }
+    .cat-sidebar__options {
+      display: grid;
+      gap: 8px;
+    }
+    .cat-sidebar__option {
+      width: 100%;
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: left;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .cat-sidebar__option:hover,
+    .cat-sidebar__option.active {
+      color: var(--cobalt);
+      border-color: rgba(196,101,74,0.45);
+      background: #FDF5ED;
+    }
+    .cat-sidebar__option-count {
+      color: var(--text-light);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .cat-sidebar__reset {
+      width: 100%;
+      margin-top: 4px;
+      padding: 11px 14px;
+      border: 1px solid var(--cobalt);
+      border-radius: 6px;
+      color: var(--cobalt);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .cat-sidebar__reset:hover {
+      background: var(--cobalt);
+      color: var(--white);
+    }
+    .cat-page__products { min-width: 0; }
+
     .cat-page__grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -4363,6 +4493,54 @@
       });
     }
 
+    function getPriceBounds(products) {
+      const prices = products.map(p => parseFloat(p.price)).filter(n => !Number.isNaN(n));
+      if (!prices.length) return { min: 0, max: 0 };
+      return { min: Math.floor(Math.min(...prices)), max: Math.ceil(Math.max(...prices)) };
+    }
+
+    function categorySidebarHTML(products, filterItems, filterLabel) {
+      const bounds = getPriceBounds(products);
+      return `
+        <aside class="cat-sidebar" aria-label="Filtry produktów">
+          <h2 class="cat-sidebar__title">Filtry</h2>
+          <div class="cat-filter-block">
+            <div class="cat-filter-block__label">
+              <span>Cena</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="cat-price-filter">
+              <label>Od
+                <input type="number" id="catPriceMin" min="${bounds.min}" max="${bounds.max}" value="${bounds.min}" inputmode="decimal">
+              </label>
+              <label>Do
+                <input type="number" id="catPriceMax" min="${bounds.min}" max="${bounds.max}" value="${bounds.max}" inputmode="decimal">
+              </label>
+            </div>
+          </div>
+          ${filterItems.length > 1 ? `
+          <div class="cat-filter-block">
+            <div class="cat-filter-block__label">
+              <span>${filterLabel}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V14M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+            </div>
+            <div class="cat-sidebar__options" id="catFilters">
+              <button class="cat-sidebar__option cat-filter active" data-filter="all">
+                <span>Wszystkie</span><span class="cat-sidebar__option-count">${products.length}</span>
+              </button>
+              ${filterItems.map(item => {
+                const friendly = D.decoNames[item.slug] || '';
+                const label = friendly ? `${item.name} ${friendly}` : item.name;
+                return `<button class="cat-sidebar__option cat-filter" data-filter="${item.slug}">
+                  <span>${label}</span><span class="cat-sidebar__option-count">${item.count}</span>
+                </button>`;
+              }).join('')}
+            </div>
+          </div>` : ''}
+          <button type="button" class="cat-sidebar__reset" id="catResetFilters">Wyczyść filtry</button>
+        </aside>`;
+    }
+
     // ========== PRODUCT CARD TEMPLATE ==========
     function productCardHTML(p) {
       const name = cleanName(p.name);
@@ -4494,14 +4672,7 @@
         decoFilters = Object.values(decoMap).filter(d => d.count > 0).sort((a, b) => b.count - a.count);
       }
 
-      const filtersHTML = decoFilters.length > 1 ? `
-        <div class="cat-page__filters" id="catFilters">
-          <button class="cat-filter active" data-filter="all">Wszystkie (${products.length})</button>
-          ${decoFilters.map(d => {
-            const fn = D.decoNames[d.slug] || '';
-            return `<button class="cat-filter" data-filter="${d.slug}">${d.name}${fn ? ' ' + fn : ''} (${d.count})</button>`;
-          }).join('')}
-        </div>` : '';
+      const sidebarHTML = categorySidebarHTML(products, decoFilters, 'Wzór');
 
       // FAQ
       const faqs = generateFAQ(cat);
@@ -4641,7 +4812,7 @@
             ${trustStripHTML}
 
             <div class="cat-page__toolbar">
-              <div>${filtersHTML}</div>
+              <div></div>
               <div class="cat-page__toolbar-right">
                 <span class="cat-page__results">Pokazuje ${products.length} produktów</span>
                 <select class="cat-sort" id="catSort">
@@ -4653,12 +4824,17 @@
               </div>
             </div>
             ${products.length === 0 ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów w tej kategorii.</p>' :
-              `<div class="cat-page__grid" id="catGrid">
-                ${products.slice(0, 12).map(p => productCardHTML(p)).join('')}
-              </div>
-              ${products.length > 12 ? `<div class="cat-page__load-more" id="loadMoreWrap">
-                <button onclick="loadMoreProducts()">Pokaz wiecej (${products.length - 12})</button>
-              </div>` : ''}`}
+              `<div class="cat-page__content">
+                ${sidebarHTML}
+                <div class="cat-page__products">
+                  <div class="cat-page__grid" id="catGrid">
+                    ${products.slice(0, 12).map(p => productCardHTML(p)).join('')}
+                  </div>
+                  ${products.length > 12 ? `<div class="cat-page__load-more" id="loadMoreWrap">
+                    <button onclick="loadMoreProducts()">Pokaz wiecej (${products.length - 12})</button>
+                  </div>` : ''}
+                </div>
+              </div>`}
             ${seoText}
             ${faqHTML}
             ${relCatsWithImgsHTML}
@@ -4702,11 +4878,7 @@
       });
       const filters = Object.values(shapeMap).filter(d => d.count > 0).sort((a, b) => b.count - a.count);
 
-      const filtersHTML = filters.length > 1 ? `
-        <div class="cat-page__filters" id="catFilters">
-          <button class="cat-filter active" data-filter="all">Wszystkie (${products.length})</button>
-          ${filters.map(f => `<button class="cat-filter" data-filter="${f.slug}">${f.name} (${f.count})</button>`).join('')}
-        </div>` : '';
+      const sidebarHTML = categorySidebarHTML(products, filters, 'Kształt');
 
       // Related virtual categories with images
       const relVirtHTML = virtualCategories.filter(v => v.slug !== slug).length > 0 ? `
@@ -4786,7 +4958,7 @@
             ${vcTrustStripHTML}
 
             <div class="cat-page__toolbar">
-              <div>${filtersHTML}</div>
+              <div></div>
               <div class="cat-page__toolbar-right">
                 <span class="cat-page__results">Pokazuje ${products.length} produktów</span>
                 <select class="cat-sort" id="catSort">
@@ -4798,12 +4970,17 @@
               </div>
             </div>
             ${products.length === 0 ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów w tej kategorii.</p>' :
-              `<div class="cat-page__grid" id="catGrid">
-                ${products.slice(0, 12).map(p => productCardHTML(p)).join('')}
-              </div>
-              ${products.length > 12 ? `<div class="cat-page__load-more" id="loadMoreWrap">
-                <button onclick="loadMoreProducts()">Pokaz wiecej (${products.length - 12})</button>
-              </div>` : ''}`}
+              `<div class="cat-page__content">
+                ${sidebarHTML}
+                <div class="cat-page__products">
+                  <div class="cat-page__grid" id="catGrid">
+                    ${products.slice(0, 12).map(p => productCardHTML(p)).join('')}
+                  </div>
+                  ${products.length > 12 ? `<div class="cat-page__load-more" id="loadMoreWrap">
+                    <button onclick="loadMoreProducts()">Pokaz wiecej (${products.length - 12})</button>
+                  </div>` : ''}
+                </div>
+              </div>`}
             ${seoText}
             ${relVirtHTML}
           </div>
@@ -4815,57 +4992,42 @@
     }
 
     function initVirtualCategoryFilters(vc, products) {
-      const grid = document.getElementById('catGrid');
-      const sortEl = document.getElementById('catSort');
-      const filtersContainer = document.getElementById('catFilters');
-      if (!grid) return;
-
-      let activeFilter = 'all';
-
-      function getFilteredSorted() {
-        let filtered = activeFilter === 'all'
-          ? [...products]
-          : products.filter(p => p.cats.some(c => c.slug === activeFilter));
-
-        const sortVal = sortEl ? sortEl.value : 'default';
-        if (sortVal === 'price-asc') filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-        else if (sortVal === 'price-desc') filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-        else if (sortVal === 'name-az') filtered.sort((a, b) => cleanName(a.name).localeCompare(cleanName(b.name), 'pl'));
-        return filtered;
-      }
-
-      function rerender() {
-        const items = getFilteredSorted();
-        grid.innerHTML = items.length === 0
-          ? '<p style="color:var(--text-muted);padding:40px 0;">Brak produktów dla wybranego filtra.</p>'
-          : items.map(p => productCardHTML(p)).join('');
-      }
-
-      if (filtersContainer) {
-        filtersContainer.addEventListener('click', e => {
-          const btn = e.target.closest('.cat-filter');
-          if (!btn) return;
-          filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          activeFilter = btn.dataset.filter;
-          rerender();
-        });
-      }
-      if (sortEl) sortEl.addEventListener('change', rerender);
+      initProductListingFilters(products, (product, activeFilter) =>
+        activeFilter === 'all' || product.cats.some(c => c.slug === activeFilter)
+      );
     }
 
     function initCategoryFilters(slug, products) {
+      initProductListingFilters(products, (product, activeFilter) =>
+        activeFilter === 'all' || product.cats.some(c => c.slug === activeFilter)
+      );
+    }
+
+    function initProductListingFilters(products, filterMatcher) {
       const grid = document.getElementById('catGrid');
       const sortEl = document.getElementById('catSort');
       const filtersContainer = document.getElementById('catFilters');
+      const minEl = document.getElementById('catPriceMin');
+      const maxEl = document.getElementById('catPriceMax');
+      const resetEl = document.getElementById('catResetFilters');
+      const resultsEl = document.querySelector('.cat-page__results');
+      const loadMoreWrap = document.getElementById('loadMoreWrap');
       if (!grid) return;
 
       let activeFilter = 'all';
+      let visibleCount = 12;
+      const bounds = getPriceBounds(products);
 
       function getFilteredSorted() {
-        let filtered = activeFilter === 'all'
-          ? [...products]
-          : products.filter(p => p.cats.some(c => c.slug === activeFilter));
+        const min = minEl && minEl.value !== '' ? parseFloat(minEl.value) : bounds.min;
+        const max = maxEl && maxEl.value !== '' ? parseFloat(maxEl.value) : bounds.max;
+        let filtered = products.filter(p => {
+          const price = parseFloat(p.price);
+          if (!filterMatcher(p, activeFilter)) return false;
+          if (!Number.isNaN(min) && price < min) return false;
+          if (!Number.isNaN(max) && price > max) return false;
+          return true;
+        });
 
         const sortVal = sortEl ? sortEl.value : 'default';
         if (sortVal === 'price-asc') filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
@@ -4876,11 +5038,32 @@
 
       function rerender() {
         const items = getFilteredSorted();
+        const visible = items.slice(0, visibleCount);
         grid.innerHTML = items.length === 0
           ? '<p style="color:var(--text-muted);padding:40px 0;grid-column:1/-1;">Brak produktów dla wybranych filtrów.</p>'
-          : items.map(p => productCardHTML(p)).join('');
+          : visible.map(p => productCardHTML(p)).join('');
+        if (resultsEl) {
+          resultsEl.textContent = items.length === 0
+            ? 'Brak produktów'
+            : items.length === 1
+            ? 'Pokazuje 1 produkt'
+            : `Pokazuje ${Math.min(visibleCount, items.length)} z ${items.length} produktów`;
+        }
+        if (loadMoreWrap) {
+          const remaining = Math.max(items.length - visibleCount, 0);
+          loadMoreWrap.style.display = remaining > 0 ? 'flex' : 'none';
+          const btn = loadMoreWrap.querySelector('button');
+          if (btn) btn.textContent = `Pokaz wiecej (${remaining})`;
+        }
         initScrollObserver();
       }
+
+      window._categoryFilterState = {
+        showMore() {
+          visibleCount += 12;
+          rerender();
+        }
+      };
 
       if (filtersContainer) {
         filtersContainer.addEventListener('click', (e) => {
@@ -4889,13 +5072,38 @@
           filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           activeFilter = btn.dataset.filter;
+          visibleCount = 12;
           rerender();
         });
       }
 
       if (sortEl) {
-        sortEl.addEventListener('change', rerender);
+        sortEl.addEventListener('change', () => {
+          visibleCount = 12;
+          rerender();
+        });
       }
+      [minEl, maxEl].forEach(el => {
+        if (!el) return;
+        el.addEventListener('input', () => {
+          visibleCount = 12;
+          rerender();
+        });
+      });
+      if (resetEl) {
+        resetEl.addEventListener('click', () => {
+          activeFilter = 'all';
+          visibleCount = 12;
+          if (minEl) minEl.value = bounds.min;
+          if (maxEl) maxEl.value = bounds.max;
+          if (sortEl) sortEl.value = 'default';
+          if (filtersContainer) {
+            filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+          }
+          rerender();
+        });
+      }
+      rerender();
     }
 
     // ========== RENDER: PRODUCT ==========
@@ -5291,6 +5499,10 @@
     // ========== CART ==========
     let cart = [];
     function loadMoreProducts() {
+      if (window._categoryFilterState) {
+        window._categoryFilterState.showMore();
+        return;
+      }
       const grid = document.getElementById('catGrid');
       const wrap = document.getElementById('loadMoreWrap');
       if (!grid || !window._remainingProducts) return;

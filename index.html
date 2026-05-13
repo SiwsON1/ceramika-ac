@@ -2040,6 +2040,197 @@
     }
     .prod-info__desc p { margin-bottom: 12px; }
 
+    /* Product tabs - WooCommerce pattern, Ceramika AC styling */
+    .prod-tabs {
+      padding: 8px 0 70px;
+      background: var(--cream);
+    }
+    .prod-tabs__shell {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.28);
+    }
+    .prod-tabs__nav {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border);
+      scrollbar-width: none;
+    }
+    .prod-tabs__nav::-webkit-scrollbar { display: none; }
+    .prod-tabs__btn {
+      position: relative;
+      min-height: 58px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      flex: 0 0 auto;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border);
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+    .prod-tabs__btn svg {
+      width: 17px;
+      height: 17px;
+      color: var(--terracotta);
+      flex-shrink: 0;
+    }
+    .prod-tabs__btn::after {
+      content: '';
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: -1px;
+      height: 2px;
+      background: var(--terracotta);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s var(--ease-out);
+    }
+    .prod-tabs__btn:hover,
+    .prod-tabs__btn.active {
+      color: var(--cobalt);
+      background: rgba(255,255,255,0.5);
+    }
+    .prod-tabs__btn.active::after { transform: scaleX(1); }
+    .prod-tabs__panel {
+      display: none;
+      padding: 34px 0 38px;
+    }
+    .prod-tabs__panel.active { display: block; animation: fadeIn 0.28s ease; }
+    .prod-tabs__grid {
+      display: grid;
+      gap: 28px;
+    }
+    @media (min-width: 900px) {
+      .prod-tabs__grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr); }
+    }
+    .prod-tabs__eyebrow {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--terracotta);
+    }
+    .prod-tabs__title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 1.16;
+      font-weight: 500;
+      color: var(--cobalt);
+      margin-bottom: 16px;
+    }
+    .prod-tabs__copy {
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--text-muted);
+      max-width: 760px;
+    }
+    .prod-tabs__copy p { margin-bottom: 14px; }
+    .prod-tabs__note {
+      padding: 22px;
+      border-left: 2px solid var(--terracotta);
+      background: #FDF5ED;
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+    .prod-tabs__note strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--cobalt);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .prod-tabs__facts {
+      display: grid;
+      gap: 10px;
+      max-width: 720px;
+    }
+    @media (min-width: 680px) {
+      .prod-tabs__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .prod-tabs__fact {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 15px 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.45);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .prod-tabs__fact span:first-child {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .prod-tabs__fact span:last-child {
+      color: var(--cobalt);
+      font-weight: 600;
+      text-align: right;
+    }
+    .prod-tabs__steps {
+      display: grid;
+      gap: 14px;
+    }
+    .prod-tabs__step {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 14px;
+      align-items: start;
+      max-width: 760px;
+    }
+    .prod-tabs__step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .prod-tabs__step h3 {
+      font-size: 15px;
+      color: var(--cobalt);
+      margin-bottom: 2px;
+    }
+    .prod-tabs__step p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-muted);
+    }
+    .prod-tabs__empty {
+      padding: 26px;
+      border: 1px dashed var(--border);
+      background: rgba(255,255,255,0.35);
+      border-radius: 8px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .prod-tabs__empty a {
+      color: var(--cobalt);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: var(--terracotta);
+    }
+    @media (max-width: 639px) {
+      .prod-tabs { padding-bottom: 48px; }
+      .prod-tabs__btn { min-height: 52px; padding: 0 16px; font-size: 12px; }
+      .prod-tabs__panel { padding: 28px 0 32px; }
+      .prod-tabs__fact { flex-direction: column; gap: 4px; }
+      .prod-tabs__fact span:last-child { text-align: left; }
+    }
+
     /* Spec table */
     .prod-spec {
       margin-bottom: 24px;
@@ -4062,6 +4253,16 @@
       return parts.map(text => `<p>${escapeHTML(text)}</p>`).join('');
     }
 
+    function getProductDescLine(product, label) {
+      const holder = document.createElement('div');
+      holder.innerHTML = product.desc || '';
+      const prefix = new RegExp(`^${label}\\s*:`, 'i');
+      const line = Array.from(holder.querySelectorAll('p, li'))
+        .map(el => (el.textContent || '').replace(/\s+/g, ' ').trim())
+        .find(text => prefix.test(text));
+      return line ? line.replace(prefix, '').trim() : '';
+    }
+
     // ========== INTERNAL LINKING HELPERS ==========
 
     // Parse deco code from product name: "Cukiernica 300ml Nd. T1" -> "t1"
@@ -4751,9 +4952,25 @@
       }
 
       // Spec data parsing
-      const sizeMatch = desc.match(/Rozmiar[:\s]*([^\n.]+)/i);
+      const sizeValue = getProductDescLine(p, 'Rozmiar');
       const capacityMatch = p.name.match(/(\d+(?:[.,]\d+)?)\s*(ml|l|L)/i);
-      const decoNumMatch = desc.match(/Numer dekoracji[:\s]*(\w+)/i) || (decoCat ? [null, decoCat.name] : null);
+      const decoFromDesc = getProductDescLine(p, 'Numer dekoracji');
+      const decoNumMatch = decoFromDesc ? [null, decoFromDesc] : (decoCat ? [null, decoCat.name] : null);
+      const capacityValue = capacityMatch ? `${capacityMatch[1]} ${capacityMatch[2]}` : '';
+      const tabsFacts = [
+        shapeCat ? ['Kształt', shapeCat.name] : null,
+        decoNumMatch ? ['Dekoracja', decoTitle || decoNumMatch[1]] : null,
+        sizeValue ? ['Rozmiar', sizeValue] : null,
+        capacityValue ? ['Pojemność', capacityValue] : null,
+        ['Materiał', 'Ceramika bolesławiecka'],
+        ['Produkcja', 'Ręczna, Bolesławiec, Polska'],
+        ['Użytkowanie', 'Zmywarka, piekarnik, mikrofalówka']
+      ].filter(Boolean);
+      const tabsFactsHTML = tabsFacts.map(([label, value]) => `
+        <div class="prod-tabs__fact">
+          <span>${escapeHTML(label)}</span>
+          <span>${escapeHTML(value)}</span>
+        </div>`).join('');
 
       // Schema.org Product JSON-LD
       const cleanDesc = stripHTML(p.desc).substring(0, 500);
@@ -4880,11 +5097,87 @@
                     <span class="prod-spec__value">Reczna, Boleslawiec, Polska</span>
                   </div>
                 </div>
-                ${descHTML ? `<div class="prod-info__desc">${descHTML}</div>` : ''}
               </div>
             </div>
           </div>
         </div>
+        <section class="prod-tabs" aria-label="Szczegóły produktu">
+          <div class="container">
+            <div class="prod-tabs__shell">
+              <div class="prod-tabs__nav" role="tablist" aria-label="Informacje o produkcie">
+                <button type="button" class="prod-tabs__btn active" data-tab="opis" role="tab" aria-selected="true" aria-controls="prod-tab-opis">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5z"/></svg>
+                  Opis
+                </button>
+                <button type="button" class="prod-tabs__btn" data-tab="dane" role="tab" aria-selected="false" aria-controls="prod-tab-dane">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                  Dane produktu
+                </button>
+                <button type="button" class="prod-tabs__btn" data-tab="dostawa" role="tab" aria-selected="false" aria-controls="prod-tab-dostawa">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                  Dostawa i zwroty
+                </button>
+                <button type="button" class="prod-tabs__btn" data-tab="opinie" role="tab" aria-selected="false" aria-controls="prod-tab-opinie">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>
+                  Opinie
+                </button>
+              </div>
+              <div class="prod-tabs__panel active" id="prod-tab-opis" data-panel="opis" role="tabpanel">
+                <div class="prod-tabs__grid">
+                  <div>
+                    <span class="prod-tabs__eyebrow">Opis produktu</span>
+                    <h2 class="prod-tabs__title">${name}</h2>
+                    <div class="prod-tabs__copy">${descHTML || '<p>Oryginalna ceramika bolesławiecka zdobiona ręcznie za pomocą stempli i pędzli.</p>'}</div>
+                  </div>
+                  <aside class="prod-tabs__note">
+                    <strong>Ręczna produkcja</strong>
+                    Każdy egzemplarz może delikatnie różnić się detalem dekoracji. To naturalna cecha ceramiki bolesławieckiej zdobionej ręcznie.
+                  </aside>
+                </div>
+              </div>
+              <div class="prod-tabs__panel" id="prod-tab-dane" data-panel="dane" role="tabpanel" hidden>
+                <span class="prod-tabs__eyebrow">Specyfikacja</span>
+                <h2 class="prod-tabs__title">Dane produktu</h2>
+                <div class="prod-tabs__facts">${tabsFactsHTML}</div>
+              </div>
+              <div class="prod-tabs__panel" id="prod-tab-dostawa" data-panel="dostawa" role="tabpanel" hidden>
+                <span class="prod-tabs__eyebrow">Zakup i dostawa</span>
+                <h2 class="prod-tabs__title">Dostawa i zwroty</h2>
+                <div class="prod-tabs__steps">
+                  <div class="prod-tabs__step">
+                    <span class="prod-tabs__step-num">1</span>
+                    <div>
+                      <h3>Starannie zabezpieczona paczka</h3>
+                      <p>Ceramika jest pakowana z myślą o bezpiecznym transporcie. Każdy element zabezpieczamy przed obiciami i przesuwaniem w kartonie.</p>
+                    </div>
+                  </div>
+                  <div class="prod-tabs__step">
+                    <span class="prod-tabs__step-num">2</span>
+                    <div>
+                      <h3>Wysyłka po złożeniu zamówienia</h3>
+                      <p>Produkty dostępne od ręki wysyłane są zgodnie z informacją w sklepie. Przy produktach wykonywanych pod zamówienie czas realizacji może być dłuższy.</p>
+                    </div>
+                  </div>
+                  <div class="prod-tabs__step">
+                    <span class="prod-tabs__step-num">3</span>
+                    <div>
+                      <h3>Zwrot zgodnie z regulaminem sklepu</h3>
+                      <p>Szczegóły zakupu, płatności i zwrotów znajdują się w regulaminie Ceramika AC.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="prod-tabs__panel" id="prod-tab-opinie" data-panel="opinie" role="tabpanel" hidden>
+                <span class="prod-tabs__eyebrow">Opinie klientów</span>
+                <h2 class="prod-tabs__title">Opinie o produkcie</h2>
+                <div class="prod-tabs__empty">
+                  Ten produkt nie ma jeszcze opinii w tej wersji katalogu. Jeśli chcesz zapytać o dostępność, wzór lub komplet w tej dekoracji, przejdź do oryginalnej strony produktu:
+                  ${p.link ? `<a href="${p.link}" target="_blank" rel="nofollow noopener">otwórz produkt w sklepie</a>.` : '<a href="https://ceramikaac.com/sklep/" target="_blank" rel="nofollow noopener">otwórz sklep</a>.'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         ${related.length > 0 ? `
         <div class="related">
           <div class="container">
@@ -4922,6 +5215,7 @@
         <scr` + `ipt type="application/ld+json">${schemaJSON}</scr` + `ipt>
         <scr` + `ipt type="application/ld+json">${bcSchema}</scr` + `ipt>`;
       pages.product.innerHTML = html;
+      initProductTabs();
       initScrollObserver();
 
       // Sticky CTA portal (outside .page to avoid transform containment breaking position:fixed)
@@ -4950,6 +5244,28 @@
           stickyObs.observe(galleryEl);
         }
       }
+    }
+
+    function initProductTabs() {
+      const tabs = document.querySelectorAll('.prod-tabs__btn');
+      const panels = document.querySelectorAll('.prod-tabs__panel');
+      if (!tabs.length || !panels.length) return;
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tab;
+          tabs.forEach(btn => {
+            const active = btn === tab;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          panels.forEach(panel => {
+            const active = panel.dataset.panel === target;
+            panel.classList.toggle('active', active);
+            panel.hidden = !active;
+          });
+        });
+      });
     }
 
     function switchImage(src, thumbEl) {

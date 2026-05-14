@@ -1786,9 +1786,9 @@
     }
     .cat-sidebar {
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.55);
       border-radius: 8px;
-      padding: 20px;
+      padding: 0 20px 20px;
     }
     @media (min-width: 1024px) {
       .cat-sidebar {
@@ -1802,13 +1802,15 @@
       font-weight: 500;
       line-height: 1.15;
       color: var(--cobalt);
-      margin-bottom: 18px;
+      padding: 20px 0 16px;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--border);
     }
     .cat-filter-block {
-      padding: 18px 0;
+      padding: 22px 0;
       border-top: 1px solid var(--border);
     }
-    .cat-filter-block:first-of-type { padding-top: 0; border-top: none; }
+    .cat-filter-block:first-of-type { border-top: none; }
     .cat-filter-block__label {
       display: flex;
       align-items: center;
@@ -1826,6 +1828,39 @@
       height: 16px;
       color: var(--terracotta);
       flex-shrink: 0;
+    }
+    .cat-active-filters {
+      display: none;
+      padding: 16px 0 0;
+    }
+    .cat-active-filters.visible { display: block; }
+    .cat-active-filters__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cat-active-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border: 1px solid rgba(196,101,74,0.35);
+      border-radius: 999px;
+      background: #FDF5ED;
+      color: var(--cobalt);
+      font-size: 12px;
+    }
+    .cat-active-filter button {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--terracotta);
+      color: var(--white);
+      font-size: 12px;
+      line-height: 1;
     }
     .cat-price-filter {
       display: grid;
@@ -1854,9 +1889,77 @@
       border-color: var(--terracotta);
       box-shadow: 0 0 0 3px rgba(196,101,74,0.12);
     }
+    .cat-price-slider {
+      position: relative;
+      height: 30px;
+      margin: 4px 0 8px;
+    }
+    .cat-price-slider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 14px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--border);
+    }
+    .cat-price-slider input[type="range"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 30px;
+      background: transparent;
+      pointer-events: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .cat-price-slider input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      border: 2px solid var(--white);
+      box-shadow: 0 2px 8px rgba(27,42,74,0.22);
+      pointer-events: auto;
+      cursor: grab;
+    }
+    .cat-price-slider input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      border: 2px solid var(--white);
+      box-shadow: 0 2px 8px rgba(27,42,74,0.22);
+      pointer-events: auto;
+      cursor: grab;
+    }
+    .cat-price-amount {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .cat-price-amount button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--cobalt);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      transition: background 0.2s ease;
+    }
+    .cat-price-amount button:hover { background: var(--terracotta); }
     .cat-sidebar__options {
       display: grid;
-      gap: 8px;
+      gap: 0;
     }
     .cat-sidebar__option {
       width: 100%;
@@ -1865,24 +1968,35 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--white);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(232,227,219,0.75);
+      background: transparent;
       color: var(--text-muted);
       font-size: 13px;
       text-align: left;
       transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
+    .cat-sidebar__option:last-child { border-bottom: none; }
     .cat-sidebar__option:hover,
     .cat-sidebar__option.active {
       color: var(--cobalt);
-      border-color: rgba(196,101,74,0.45);
-      background: #FDF5ED;
+      background: transparent;
+    }
+    .cat-sidebar__option.active span:first-child::before {
+      content: '•';
+      color: var(--terracotta);
+      margin-right: 6px;
     }
     .cat-sidebar__option-count {
-      color: var(--text-light);
+      min-width: 26px;
+      height: 22px;
+      padding: 0 7px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
       font-size: 12px;
+      line-height: 20px;
+      color: var(--text-light);
+      text-align: center;
       flex-shrink: 0;
     }
     .cat-sidebar__reset {
@@ -4057,6 +4171,14 @@
     // Virtual categories (audyt SEO: D1-D7 + kolekcje tematyczne)
     const virtualCategories = [
       {
+        slug: 'wyprzedaz',
+        name: 'Wyprzedaż / Outlet',
+        description: 'Okazje cenowe i tańsze produkty ceramiki bolesławieckiej - dobre miejsce na pierwszy zakup lub uzupełnienie zestawu.',
+        shapeSlugs: [],
+        imageSlug: 'kubki',
+        _outlet: true,
+      },
+      {
         slug: 'komplety',
         name: 'Komplety i zestawy',
         description: 'Gotowe zestawy ceramiki bolesławieckiej - do kawy, obiadu i na prezent',
@@ -4107,17 +4229,56 @@
         _newest: true,
         imageSlug: 'kubki',
       },
+      {
+        slug: 'wielkanoc',
+        name: 'Ceramika na Wielkanoc',
+        description: 'Wielkanocna ceramika bolesławiecka - jajeczniki, kieliszki na jajko, figurki i dekoracje stołu.',
+        shapeSlugs: ['maselnice-jajeczniki', 'figurki'],
+        imageSlug: 'maselnice-jajeczniki',
+        matchKeywords: ['jajko', 'jajeczn', 'zajac', 'zają', 'myszka'],
+      },
+      {
+        slug: 'boze-narodzenie',
+        name: 'Ceramika na Boże Narodzenie',
+        description: 'Ceramika bolesławiecka na świąteczny stół i prezent - kubki, filiżanki, zestawy oraz dekoracje.',
+        shapeSlugs: ['kubki', 'filizanki', 'zestawy-komplety', 'figurki'],
+        imageSlug: 'zestawy-komplety',
+        matchKeywords: ['anio', 'swiet', 'świąt', 'boze', 'boże'],
+        _limit: 16,
+      },
     ];
+
+    function getVirtualCategoryProducts(vc) {
+      if (vc._newest) {
+        return [...D.products].sort((a, b) => b.id - a.id).slice(0, 24);
+      }
+      if (vc._outlet) {
+        const outlet = D.products.filter(p => parseFloat(p.price) <= 80);
+        return outlet.length > 0
+          ? outlet.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
+          : [...D.products].sort((a, b) => parseFloat(a.price) - parseFloat(b.price)).slice(0, 24);
+      }
+      let items = D.products.filter(p => {
+        const inShape = p.cats.some(c => vc.shapeSlugs.includes(c.slug));
+        const inKeyword = vc.matchKeywords
+          ? vc.matchKeywords.some(k => `${p.name} ${p.slug}`.toLowerCase().includes(k.toLowerCase()))
+          : false;
+        return inShape || inKeyword;
+      });
+      if (vc.matchKeywords) {
+        const keywordItems = D.products.filter(p => vc.matchKeywords.some(k => `${p.name} ${p.slug}`.toLowerCase().includes(k.toLowerCase())));
+        if (keywordItems.length > 0) items = keywordItems;
+      }
+      if (vc._limit) items = items.slice(0, vc._limit);
+      return items;
+    }
 
     // Enrich virtual categories with product counts and images
     virtualCategories.forEach(vc => {
-      const products = new Set();
-      D.products.forEach(p => {
-        if (p.cats.some(c => vc.shapeSlugs.includes(c.slug))) products.add(p.id);
-      });
-      vc.count = products.size;
+      const products = getVirtualCategoryProducts(vc);
+      vc.count = products.length;
       const imgCat = D.categories.find(c => c.slug === vc.imageSlug);
-      vc.image = imgCat ? imgCat.image : null;
+      vc.image = imgCat ? imgCat.image : (products[0] ? products[0].images[0] : null);
     });
 
     // ========== NAV ==========
@@ -4502,12 +4663,20 @@
     function categorySidebarHTML(products, filterItems, filterLabel) {
       const bounds = getPriceBounds(products);
       return `
-        <aside class="cat-sidebar" aria-label="Filtry produktów">
+        <aside class="cat-sidebar" aria-label="Filtry produktów" data-filter-label="${filterLabel}">
           <h2 class="cat-sidebar__title">Filtry</h2>
+          <div class="cat-active-filters" id="catActiveFilters" aria-live="polite">
+            <div class="cat-filter-block__label"><span>Aktywne filtry</span></div>
+            <div class="cat-active-filters__list" id="catActiveFiltersList"></div>
+          </div>
           <div class="cat-filter-block">
             <div class="cat-filter-block__label">
-              <span>Cena</span>
+              <span>Filtruj wg ceny</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="cat-price-slider" aria-hidden="true">
+              <input type="range" id="catPriceMinRange" min="${bounds.min}" max="${bounds.max}" value="${bounds.min}">
+              <input type="range" id="catPriceMaxRange" min="${bounds.min}" max="${bounds.max}" value="${bounds.max}">
             </div>
             <div class="cat-price-filter">
               <label>Od
@@ -4517,11 +4686,15 @@
                 <input type="number" id="catPriceMax" min="${bounds.min}" max="${bounds.max}" value="${bounds.max}" inputmode="decimal">
               </label>
             </div>
+            <div class="cat-price-amount">
+              <button type="button" id="catApplyPrice">Filtruj</button>
+              <span id="catPriceLabel">Cena: ${bounds.min} zł - ${bounds.max} zł</span>
+            </div>
           </div>
           ${filterItems.length > 1 ? `
           <div class="cat-filter-block">
             <div class="cat-filter-block__label">
-              <span>${filterLabel}</span>
+              <span>${filterLabel === 'Wzór' ? 'Filtruj wg wzoru' : 'Kategorie produktów'}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V14M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
             </div>
             <div class="cat-sidebar__options" id="catFilters">
@@ -4853,15 +5026,7 @@
       const vc = virtualCategories.find(v => v.slug === slug);
       if (!vc) { renderShop(); return; }
 
-      let products;
-      if (vc._newest) {
-        // Sort by ID descending (newest first) and take top 24
-        products = [...D.products].sort((a, b) => b.id - a.id).slice(0, 24);
-      } else if (vc._limit) {
-        products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug))).slice(0, vc._limit);
-      } else {
-        products = D.products.filter(p => p.cats.some(c => vc.shapeSlugs.includes(c.slug)));
-      }
+      const products = getVirtualCategoryProducts(vc);
       const title = vc.name;
 
       // Shape sub-filters (which shape categories are represented)
@@ -5009,7 +5174,13 @@
       const filtersContainer = document.getElementById('catFilters');
       const minEl = document.getElementById('catPriceMin');
       const maxEl = document.getElementById('catPriceMax');
+      const minRangeEl = document.getElementById('catPriceMinRange');
+      const maxRangeEl = document.getElementById('catPriceMaxRange');
+      const priceApplyEl = document.getElementById('catApplyPrice');
+      const priceLabelEl = document.getElementById('catPriceLabel');
       const resetEl = document.getElementById('catResetFilters');
+      const activeFiltersWrap = document.getElementById('catActiveFilters');
+      const activeFiltersList = document.getElementById('catActiveFiltersList');
       const resultsEl = document.querySelector('.cat-page__results');
       const loadMoreWrap = document.getElementById('loadMoreWrap');
       if (!grid) return;
@@ -5017,15 +5188,47 @@
       let activeFilter = 'all';
       let visibleCount = 12;
       const bounds = getPriceBounds(products);
+      let appliedMin = bounds.min;
+      let appliedMax = bounds.max;
+
+      function syncPriceControls(source) {
+        let min = minEl && minEl.value !== '' ? parseFloat(minEl.value) : bounds.min;
+        let max = maxEl && maxEl.value !== '' ? parseFloat(maxEl.value) : bounds.max;
+        if (source === minRangeEl && minRangeEl) min = parseFloat(minRangeEl.value);
+        if (source === maxRangeEl && maxRangeEl) max = parseFloat(maxRangeEl.value);
+        if (Number.isNaN(min)) min = bounds.min;
+        if (Number.isNaN(max)) max = bounds.max;
+        if (min > max) [min, max] = [max, min];
+        if (minEl) minEl.value = min;
+        if (maxEl) maxEl.value = max;
+        if (minRangeEl) minRangeEl.value = min;
+        if (maxRangeEl) maxRangeEl.value = max;
+        if (priceLabelEl) priceLabelEl.textContent = `Cena: ${min} zł - ${max} zł`;
+      }
+
+      function updateActiveFilters() {
+        if (!activeFiltersWrap || !activeFiltersList) return;
+        const chips = [];
+        if (activeFilter !== 'all') {
+          const filterLabel = document.querySelector('.cat-sidebar')?.dataset.filterLabel || 'Filtr';
+          const label = filtersContainer
+            ? filtersContainer.querySelector(`.cat-filter[data-filter="${activeFilter}"] span:first-child`)?.textContent.trim()
+            : activeFilter;
+          chips.push(`<span class="cat-active-filter">${filterLabel}: ${label || activeFilter}<button type="button" data-clear="filter" aria-label="Usuń filtr">×</button></span>`);
+        }
+        if (appliedMin !== bounds.min || appliedMax !== bounds.max) {
+          chips.push(`<span class="cat-active-filter">Cena: ${appliedMin}-${appliedMax} zł<button type="button" data-clear="price" aria-label="Usuń filtr ceny">×</button></span>`);
+        }
+        activeFiltersList.innerHTML = chips.join('');
+        activeFiltersWrap.classList.toggle('visible', chips.length > 0);
+      }
 
       function getFilteredSorted() {
-        const min = minEl && minEl.value !== '' ? parseFloat(minEl.value) : bounds.min;
-        const max = maxEl && maxEl.value !== '' ? parseFloat(maxEl.value) : bounds.max;
         let filtered = products.filter(p => {
           const price = parseFloat(p.price);
           if (!filterMatcher(p, activeFilter)) return false;
-          if (!Number.isNaN(min) && price < min) return false;
-          if (!Number.isNaN(max) && price > max) return false;
+          if (!Number.isNaN(appliedMin) && price < appliedMin) return false;
+          if (!Number.isNaN(appliedMax) && price > appliedMax) return false;
           return true;
         });
 
@@ -5055,6 +5258,7 @@
           const btn = loadMoreWrap.querySelector('button');
           if (btn) btn.textContent = `Pokaz wiecej (${remaining})`;
         }
+        updateActiveFilters();
         initScrollObserver();
       }
 
@@ -5083,19 +5287,55 @@
           rerender();
         });
       }
-      [minEl, maxEl].forEach(el => {
+      [minEl, maxEl, minRangeEl, maxRangeEl].forEach(el => {
         if (!el) return;
         el.addEventListener('input', () => {
+          syncPriceControls(el);
+        });
+      });
+      if (priceApplyEl) {
+        priceApplyEl.addEventListener('click', () => {
+          syncPriceControls();
+          appliedMin = minEl && minEl.value !== '' ? parseFloat(minEl.value) : bounds.min;
+          appliedMax = maxEl && maxEl.value !== '' ? parseFloat(maxEl.value) : bounds.max;
           visibleCount = 12;
           rerender();
         });
-      });
+      }
+      if (activeFiltersList) {
+        activeFiltersList.addEventListener('click', e => {
+          const btn = e.target.closest('[data-clear]');
+          if (!btn) return;
+          if (btn.dataset.clear === 'filter') {
+            activeFilter = 'all';
+            if (filtersContainer) {
+              filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+            }
+          }
+          if (btn.dataset.clear === 'price') {
+            appliedMin = bounds.min;
+            appliedMax = bounds.max;
+            if (minEl) minEl.value = bounds.min;
+            if (maxEl) maxEl.value = bounds.max;
+            if (minRangeEl) minRangeEl.value = bounds.min;
+            if (maxRangeEl) maxRangeEl.value = bounds.max;
+            if (priceLabelEl) priceLabelEl.textContent = `Cena: ${bounds.min} zł - ${bounds.max} zł`;
+          }
+          visibleCount = 12;
+          rerender();
+        });
+      }
       if (resetEl) {
         resetEl.addEventListener('click', () => {
           activeFilter = 'all';
           visibleCount = 12;
+          appliedMin = bounds.min;
+          appliedMax = bounds.max;
           if (minEl) minEl.value = bounds.min;
           if (maxEl) maxEl.value = bounds.max;
+          if (minRangeEl) minRangeEl.value = bounds.min;
+          if (maxRangeEl) maxRangeEl.value = bounds.max;
+          if (priceLabelEl) priceLabelEl.textContent = `Cena: ${bounds.min} zł - ${bounds.max} zł`;
           if (sortEl) sortEl.value = 'default';
           if (filtersContainer) {
             filtersContainer.querySelectorAll('.cat-filter').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));

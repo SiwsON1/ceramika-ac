@@ -4315,7 +4315,12 @@
       const mm = document.getElementById('megaMenu');
       if (!mm) return;
 
-      const topShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
+      const mustShowShapes = ['mydelniczki-ceramiczne', 'akcesoria-kuchenne-ceramiczne'];
+      const topShapesBase = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
+      const topShapes = [
+        ...topShapesBase,
+        ...mustShowShapes.map(slug => shapeCats.find(c => c.slug === slug)).filter(Boolean)
+      ].filter((cat, index, arr) => arr.findIndex(c => c.slug === cat.slug) === index);
       const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 6);
 
       function megaLink(href, img, label, count) {
@@ -4439,7 +4444,12 @@
       const nav = document.getElementById('mobileMenuNav');
       if (!nav) return;
 
-      const topShapes = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+      const mustShowShapes = ['mydelniczki-ceramiczne', 'akcesoria-kuchenne-ceramiczne'];
+      const topShapesBase = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
+      const topShapes = [
+        ...topShapesBase,
+        ...mustShowShapes.map(slug => shapeCats.find(c => c.slug === slug)).filter(Boolean)
+      ].filter((cat, index, arr) => arr.findIndex(c => c.slug === cat.slug) === index);
       const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
 
       function chip(href, label) {
@@ -6099,8 +6109,13 @@
 
     // ========== DYNAMIC FOOTER ==========
     (function renderFooter() {
-      const topShapes = shapeCats.sort((a, b) => b.count - a.count).slice(0, 8);
-      const topDecos = decoCats.sort((a, b) => b.count - a.count).slice(0, 6);
+      const mustShowShapes = ['mydelniczki-ceramiczne', 'akcesoria-kuchenne-ceramiczne'];
+      const topShapesBase = [...shapeCats].sort((a, b) => b.count - a.count).slice(0, 8);
+      const topShapes = [
+        ...topShapesBase,
+        ...mustShowShapes.map(slug => shapeCats.find(c => c.slug === slug)).filter(Boolean)
+      ].filter((cat, index, arr) => arr.findIndex(c => c.slug === cat.slug) === index);
+      const topDecos = [...decoCats].sort((a, b) => b.count - a.count).slice(0, 6);
       document.getElementById('footerTop').innerHTML = `
         <div class="footer__brand">
           <img src="wp-content/uploads/2025/01/logo-ac-napis-kob-duze-01-e1741865753124-1024x208.png" alt="Ceramika AC" class="footer__brand-logo">

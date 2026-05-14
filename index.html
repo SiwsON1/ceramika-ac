@@ -1725,6 +1725,15 @@
        CATEGORY PAGE
        ============================================ */
     .cat-page { padding-bottom: 80px; background: var(--cream); min-height: 60vh; }
+    .cat-page > .container {
+      max-width: 1480px;
+    }
+    @media (min-width: 1024px) {
+      .cat-page > .container {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
     .cat-page__header {
       padding: 32px 0 48px;
       display: flex;

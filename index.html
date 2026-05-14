@@ -431,7 +431,6 @@
     @media (max-width: 1279px) {
       .mega-menu__inner { grid-template-columns: 1fr 1fr 1fr; padding: 0 24px; gap: 16px; }
       .mega-menu__col--wide-header { grid-column: 1 / 2; }
-      .mega-menu__col--shapes-right { display: none; }
     }
 
     .mega-menu__col-title {
@@ -4337,12 +4336,9 @@
       const mm = document.getElementById('megaMenu');
       if (!mm) return;
 
-      const mustShowShapes = ['mydelniczki-ceramiczne', 'akcesoria-kuchenne-ceramiczne'];
-      const topShapesBase = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
-      const topShapes = [
-        ...topShapesBase,
-        ...mustShowShapes.map(slug => shapeCats.find(c => c.slug === slug)).filter(Boolean)
-      ].filter((cat, index, arr) => arr.findIndex(c => c.slug === cat.slug) === index);
+      const topShapes = shapeCats
+        .filter(c => c.count > 0)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pl'));
       const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 6);
 
       function megaLink(href, img, label, count) {
@@ -4466,12 +4462,9 @@
       const nav = document.getElementById('mobileMenuNav');
       if (!nav) return;
 
-      const mustShowShapes = ['mydelniczki-ceramiczne', 'akcesoria-kuchenne-ceramiczne'];
-      const topShapesBase = shapeCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 10);
-      const topShapes = [
-        ...topShapesBase,
-        ...mustShowShapes.map(slug => shapeCats.find(c => c.slug === slug)).filter(Boolean)
-      ].filter((cat, index, arr) => arr.findIndex(c => c.slug === cat.slug) === index);
+      const topShapes = shapeCats
+        .filter(c => c.count > 0)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pl'));
       const topDecos = decoCats.filter(c => c.count > 0).sort((a, b) => b.count - a.count).slice(0, 8);
 
       function chip(href, label) {
